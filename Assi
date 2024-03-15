@@ -1,0 +1,41 @@
+admin/banner/form
+    file path = root folder>media>banner>xyz.jpg
+    store xyz.jpg in databaes
+admin/banner/list
+    list all banenrs here with edit and delete
+    edit will open form and user can see image
+
+Module
+    banner
+
+
+Show in page/index/index action or home page url
+under content child
+
+
+
+catalog/category/view?id=1
+//show all the product with category_id=1
+
+catalog/product/view?id=1✅
+//product details,quantity box & addToCart Button except cost
+
+
+//on submit of addToCart button product_id & quantity 
+sales/quote/add 
+//sales_quote
+//sales_quote_item
+//sales_quote_customer
+//on Print_r we must get Post Data
+
+
+
+//initQuote->$this->getID()
+//CUSROMERID SESSION MATHI NE SAVE
+//model ni andar model j ava nu singleton predefine leva mate
+
+//sales_quote_customer
+//sales_ORDER_customer
+
+
+//login after quote 
