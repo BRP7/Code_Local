@@ -1,0 +1,98 @@
+<?php
+$cartData = $this->getCartData();
+$id = $this->getRequest()->getQueryData('id');
+$productCollection = $this->showList();
+// $quote = Mage::getSingleton('sales/quote_item')->getCollection()
+//             ->addFieldToFilter('item_id', $quote->getItemId())
+//             ->addFieldToFilter('quote_id',$quote->getQuoteId())
+//             ->getFirstItem();
+
+
+
+
+// print_r($this);
+?>
+<div class="small-container single-product">
+<?php foreach ($productCollection->getData() as $product) { ?>
+        <div class="row">
+            <div class="col-2">
+
+                <img src="<?php echo Mage::getImagePath("catalog/product/".$product->getImageLink()) ?>" alt="" width="400px" height="400px" style="float:left;" id="Productimg">
+        
+                <div class="small-img-row">
+                    <div class="small-img-col">
+                        <img src="<?php echo Mage::getImagePath("catalog/product/appleSide.png") ?>" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="<?php echo Mage::getImagePath("catalog/product/details.jpg") ?>" width="100%"class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="<?php echo Mage::getImagePath("catalog/product/half.png") ?>" width="100%"class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="<?php echo Mage::getImagePath("catalog/product/back.png") ?>" width="100%"class="small-img">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-2">
+                <p>Home / T-Shirt</p>
+                <h1><?php echo $product->getName(); ?></h1>
+                <h4><?php echo "₹" . $product->getPrice() ?></h4>
+                <select>
+                    <option>Select Size</option>
+                    <option>XXL</option>
+                    <option>XL</option>
+                    <option>Large</option>
+                    <option>Medium</option>
+                    <option>Small</option>
+                </select>
+
+                <select>
+                    <option>Color</option>
+                    <option>Space Black</option>
+                    <option>Night Blue</option>
+                    <option>Titanium Gray</option>
+                    <option>Grape Green</option>
+                    <option>Spine Silver</option>
+                </select>
+                <form  method="post" action="<?php echo $this->getUrl('sales/quote/add/') . '?id=' . $product->getProductId()?>">
+                <input type="text" hidden name="cart[product_id]" value="<?php echo $product->getProductId() ?>">
+                <input type="number" name="cart[qty]" class="qty" value=1 min="1">
+                <input type="submit" class="btn" value="submit">
+                </form>
+                <!-- <form action="<?php //echo $this->getUrl('sales/quote/update/') . '?id=' . $product->getProductId()?>">
+                <input type="text" hidden name="cart[product_id]" value="<?php echo $product->getProductId() ?>">
+                <input type="number" name="cart[qty]"  hidden>
+                <input type="submit" value="update">
+                </form> -->
+                <!-- <form action="<?php //echo $this->getUrl('sales/quote/delete/') . '?id=' . $product->getProductId()?>">
+                <input type="text" hidden name="cart[product_id]" value="<?php //echo $product->getProductId() ?>">
+                <input type="submit" value="delete">
+                </form> -->
+
+                <h3>Product Details</h3>
+                <br>
+                <p><?php echo $product->getDescription(); ?></p>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+
+    <script>
+        var Productimg = document.getElementById("Productimg");
+        var SmallImg = document.getElementsByClassName("small-img");
+
+            SmallImg[0].onclick = function(){
+                Productimg.src = SmallImg[0].src;
+            }
+            SmallImg[1].onclick = function(){
+                Productimg.src = SmallImg[1].src;
+            }
+            SmallImg[2].onclick = function(){
+                Productimg.src = SmallImg[2].src;
+            }
+            SmallImg[3].onclick = function(){
+                Productimg.src = SmallImg[3].src;
+            }
+    </script>

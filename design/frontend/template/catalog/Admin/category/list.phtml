@@ -1,0 +1,51 @@
+<?php $productCollection = Mage::getModel("catalog/category")->getCollection(); ?>
+<div class="box">
+    <div class="container-list">
+        <div class="add">
+            <div class="title">Category Information</div>
+            <span>Add New Category:</span>
+            <a href='<?php echo $this->getUrl('admin/catalog_category/form') ?>'>
+           
+                <button class="add_btn" style='  padding: 5px 10px;background-color: #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Add</button>
+            </a>
+        </div>
+        <table>
+            <tr>
+                <!-- <th width='200vh'>Category ID</th> -->
+                <th width='200vh' >Category Name</th>
+                <th width='200vh'>Status</th>
+                <th width='200vh'>Edit</th>
+                <th width='200vh'>Delete</th>
+            </tr>
+
+            <?php
+           // echo $productCollection->getStatus();
+            foreach ($productCollection->getData() as $product) {
+                // var_dump($product->getStatus());
+                // echo "<tr><td class = 'column'>";
+                // echo $product->getCategoryId();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getCategoryName();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getStatus();
+                echo "</td>";
+                ?>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('admin/catalog_category/form/') ?>?id=<?php echo $product->getCategoryId() ?>'>
+                        <button class='upd'  style='  padding: 5px 10px; background-color:  #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Edit</button>
+                    </a>
+                </td>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('admin/catalog_category/delete/') ?>?id=<?php echo $product->getCategoryId() ?>'>
+                        <button class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete</button>
+                    </a>
+                </td>
+                </tr>
+                <?php
+            }
+            ?>
+        </table>
+    </div>
+</div>

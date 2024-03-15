@@ -1,0 +1,36 @@
+<?php $data = $this->getCategory();?>
+
+<div class="box">
+    <div class="container">
+        <div class="title">Category Information</div>
+        <div class="content">
+            <form action=<?php echo $this->getUrl('admin/catalog_category/save') ?> method="post">
+                <div class="user-details">
+                <div class="row">
+                      <input type="hidden" name="catalog_category[category_id]" value ="<?php echo $data->getCategoryId(); ?>">
+                </div> 
+                    <div class="form-group">
+                        <label for="name" class="details">Name </label>
+                        <input type="textbox" class="form-control" id="name" name="catalog_category[category_name]"
+                            placeholder="Enter name" value ="<?php echo $data->getCategoryName(); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="details">Status</label>
+                        <!-- <input type="number" class="form-control" id="status" name="catalog_category[status]"
+                            placeholder="Enter status" value ="<?php //echo $data->getStatus(); ?>"> -->
+                            <select name="catalog_category[status]">
+                            <option <?php $data->getStatus()?"selected":"" ?> value="0">D</option>
+                                <option <?php $data->getStatus()?"selected":"" ?> value="1">E</option>
+
+                                <!-- <option <?php // ($data->getStatus()=="D")?"selected":"" ?> value="0">D</option>
+                                <option <?php //($data->getStatus()=="E")?"selected":"" ?> value="1">E</option> -->
+                            </select>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Submit" name="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

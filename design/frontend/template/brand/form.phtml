@@ -1,0 +1,10 @@
+<?php
+$brand = $this->getBrand();
+?>
+
+<form action="<?php echo $this->getUrl('brand/index/save') ?>" method="post">
+<input type="text" name="brand[brand_id]" hidden value="<?php echo $brand->getBrandId()?>">
+Brand Name: <input type="text" name="brand[brand_name]" value="<?php echo $brand->getBrandName()?>">
+Brand Status: <input type="number" name="brand[brand_status]" value="<?php echo $brand->getBrandStatus()?>">
+<input type="submit">
+</form>

@@ -1,0 +1,40 @@
+<?php
+
+$productCollection = Mage::getModel("banner/banner")->getCollection();
+$URL = Mage::getBaseUrl();
+?>
+<html>
+    <body>
+<div class="table" style="margin-top:20px;">
+    <table border="1px solid black">
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>UPDATE</th>
+            <th>DELETE</th>
+        </tr>
+    <?php foreach ($productCollection->getData() as $product):?>
+        <tr>
+            <td>
+                <?php print_r($product->getBannerId());
+                ?>
+            </td>
+            <td>
+                <?php print_r($product->getBannerImage()); ?>
+            </td>
+            <td>
+                <?php print_r($product->getStatus()); ?>
+            </td>
+            <td>
+                <a href="<?php echo $URL; ?>admin/banner/form?id=<?php print_r($product->getBannerId());?>" type="button" id="update"> Update </a>
+            </td>
+            <td>
+                <a href="<?php echo $URL; ?>admin/banner/delete?id=<?php print_r($product->getBannerId());?>" type="button" id="delete"> Delete </a>
+            </td>
+        </tr>
+        <?php endforeach;?>
+    </table>
+</div>
+</body>
+</html>

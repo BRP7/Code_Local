@@ -1,0 +1,15 @@
+<?php 
+ $data = Mage::getModel("brand/brand")->getCollection();
+?>
+<table border="1px">
+<td><a href="<?php echo $this->getUrl('brand/index/form/');?>"><button>Add</button></a></td> 
+<?php foreach ($data->getData() as $item) {?>
+    <tr>
+   <td><?php echo $item->getBrandId();?></td>   
+   <td><?php echo $item->getBrandName();?></td>   
+   <td><?php echo $item->getBrandStatus();?></td>
+   <td><a href="<?php echo $this->getUrl('brand/index/form/');?>?id=<?php echo $item->getBrandId(); ?>"><button>Update</button></a></td>   
+   <td><a href="<?php echo $this->getUrl('brand/index/delete/')?>?id=<?php echo $item->getBrandId()  ?>"><button>Delete</button></a></td>   
+</tr>
+<?php }?>
+</table>

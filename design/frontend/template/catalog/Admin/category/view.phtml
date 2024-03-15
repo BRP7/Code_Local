@@ -1,0 +1,78 @@
+<?php
+
+
+// Retrieve cart data from persistent storage
+// print_r($this);
+// die;
+
+$cartData = $this->getCartData();
+$productCollection = $this->showList();
+// $productM = Mage::getModel("catalog/product");
+// $productCollection = Mage::getModel('catalog/product')->getCollection();
+$categoryModel = Mage::getModel('catalog/category');
+$categoryNames = $categoryModel->getCategoryIdName();
+
+?>
+<main>
+
+    <!-- <h1 id="top">Metal Shop</h1> -->
+
+    <?php foreach ($productCollection->getData() as $product) {
+        $selectedCategory = $categoryModel->getCategoryNameById($categoryNames, $product); ?>
+        <div class="card">
+            <div class="contenitore">
+                <img src="<?php echo Mage::getImagePath("banner/" . $product->getImageLink()) ?>" alt="immagine">
+                <h2 class="album">
+                    <?php echo $product->getName(); ?>
+                </h2>
+                <h3 class="band-name">
+                    <?php echo $selectedCategory; ?>
+                </h3>
+                <p class="details">
+                    <?php echo $product->getDescription() ? $product->getDescription() : ""; ?>
+                </p>
+                <p class="prezzo">20,00 €</p>
+                <a href="<?php echo $this->getUrl('sales/quote/edit')?>?id=<?php echo $product->getProductId() ?>" class="link">🛒</a>
+                <!-- <a href="link?id=<?php //echo $produc->getProductId()  ?>" class="link">ADD TO CART🛒</a> -->
+            </div>
+        </div>
+    <?php } ?>
+    <aside>
+    <?php
+    if (!empty($cartData)) {
+        echo '<h2 id="cart">🛒 Your Cart</h2>';
+        echo '<ul>';
+        
+        // Iterate through the outer array
+        foreach ($cartData as $customerId => $products) {
+            // Iterate through the inner array of products for each customer
+            foreach ($products as $productId => $product) {
+                // Check if 'id' and 'quantity' keys are set in the $product array and they are not empty
+                if (isset($product['id'], $product['quantity']) && !empty($product['id']) && !empty($product['quantity'])) {
+                    // Display product information
+                    echo '<li>';
+                    echo 'Product ID: ' . $product['id'] . ' | Quantity: ' . $product['quantity'];
+                    echo '</li>';
+                    
+                    // Add links with product IDs only if 'id' key is set
+                    echo '<div class="displayx">';
+                    echo '<a href="' . $this->getUrl('sales/quote/remove') . '?id=' . $product["id"] . '" class="remove">🗑</a>';
+                    echo '<a href="' . $this->getUrl('sales/quote/postdata') . '?id=' . $product["id"] . '" class="order">Proceed to order</a>';
+                    echo '</div>';
+                } else {
+                    // Handle cases where 'id' and 'quantity' keys are not set or empty
+                    echo '<li>Error: Invalid product data for Product ID ' . $productId . '</li>';
+                    // Debug: Print the contents of $product
+              
+                }
+            }
+        }
+        
+        echo '</ul>';
+    } else {
+        echo '<h2 id="cart">🛒 Your Cart is Empty</h2>';
+    }
+    ?>
+</aside>
+    <a href="#top" id="top" class="top">🔝</a>
+</main>

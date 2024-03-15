@@ -1,0 +1,43 @@
+<!-- <form action="echo $this->getUrl('customer/account/login') " method="post">
+    <label for="login_email">Email:</label>
+    <input type="email" id="login_email" name="login[login_email]"><br>
+    
+    <label for="login_password">Password:</label>
+    <input type="password" id="login_password" name="login[login_password]"><br>
+    
+    <input type="submit" value="Login">
+</form> -->
+
+
+
+
+
+
+<div class="box">
+    <div class="container">
+        <div class="title">Login</div>
+        <div class="content">
+            <form action="<?php echo $this->getUrl('customer/account/login')  ?>" method="post">
+                <div class="user-details">
+                <div class="row">
+                      <input type="hidden" name="catalog_category[category_id]" value ="">
+                </div> 
+                    <div class="form-group">
+                        <label for="Email" class="details">Email</label>
+                        <input type="textbox" class="form-control" id="name" name="login[customer_email]"
+                            placeholder="Enter Email Address">
+                    </div>
+                    <div class="form-group">
+                        <label for="Password" class="details">Password</label>
+                        <input type="password" class="form-control" id="password" name="login[password]"
+                            placeholder="Enter Password">
+                    </div>
+                 
+                </div>
+                <div class="button">
+                    <input type="submit" value="Submit" name="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

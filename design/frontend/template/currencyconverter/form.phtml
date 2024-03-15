@@ -1,0 +1,127 @@
+<?php $data = $this->getCurrency();
+//  print_r($data);
+?>
+<?php
+$countryModel = Mage::getModel('currencyconverter/currency');
+$country = $countryModel->getCountryIdName();
+// $country = $countryModel->getCurrencyValue('');
+$countryModel1 = $countryModel->getCollection();
+// print_r($data);
+$selectedCountry = $countryModel->getCountrysNameById($country, $countryModel1);
+// print_r($selectedCountry);  
+?>
+
+<div class="box">
+    <div class="container">
+        <div class="title">Currency Information</div>
+        <div class="content">
+            <form action=<?php echo $this->getUrl('currencyconverter/index/save') ?> method="post">
+                <div class="user-details">
+                <div class="row">
+                      <input type="text" hidden name="cur[id]" value="<?php echo $data->getId();?>" >
+                </div> 
+                    <div class="form-group">
+                        <label for="name" class="details">User Name </label>
+                        <input type="textbox" class="form-control" id="name" name="cur[user_name]"
+                            placeholder="Enter name" value="<?php echo $data->getUserName(); ?>" >
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="details"> Currency Amount </label>
+                        <input type="textbox" class="form-control" id="name" name="cur[amount]"
+                            placeholder="Enter name" value="<?php echo $data->getAmount(); ?>" >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status" class="details">country</label>
+                        <!-- <input type="number" class="form-control" id="status" name="catalog_category[status]"
+                            placeholder="Enter status" value ="<?php //echo $data->getStatus(); ?>"> -->
+                            <select id="category_id" name="cur[country]" class="form-control">
+                            <?php
+                            foreach ($country as $key => $value) {
+                                echo '<option value="' . $key . '" ' . ($selectedCountry == $value ? 'selected' : '') . '>' . $value . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="details">convert country</label>
+                            <select name="cur[currency_country]">
+                            <?php
+                            foreach ($country as $key => $value) {
+                                echo '<option value="' . $key . '" ' . ($selectedCountry == $value ? 'selected' : '') . '>' . $value . '</option>';
+                            }
+                            ?>
+                              </select>
+
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Submit" name="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- <div>
+    <h1>Result : <h1><input type="text" value="<?php echo $data->getResult();?>">
+</div> -->
+
+<?php $productCollection = Mage::getModel("currencyconverter/currencyconverter")->getCollection(); ?>
+<div class="box">
+    <div class="container-list">
+        <div class="add">
+            <div class="title"> Information</div>
+          
+        </div>
+        <table>
+            <tr>
+                <!-- <th width='200vh'>Category ID</th> -->
+                <th width='200vh' >User Name</th>
+                <th width='200vh'>Amount</th>
+                <th width='200vh'>Result</th>
+                <th width='200vh'>Edit</th>
+                <th width='200vh'>Delete</th>
+            </tr>
+
+            <?php
+           // echo $productCollection->getStatus();
+            foreach ($productCollection->getData() as $product) {
+                // var_dump($product->getStatus());
+                // echo $product->getId();
+                // echo "<tr><td class = 'column'>";
+                // echo $product->getCategoryId();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getUserName();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getAmount();
+                echo "</td>";
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getResult();
+                echo "</td>";
+                ?>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/form/') ?>?id=<?php echo $product->getId() ?>'>
+                        <button class='upd'  style='  padding: 5px 10px; background-color:  #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Edit</button>
+                    </a>
+                </td>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/delete/') ?>?id=<?php echo $product->getId() ?>'>
+                        <button class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete</button>
+                    </a>
+                </td>
+                </tr>
+                <?php
+            }
+            ?>
+              <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/deleteAll/') ?>'>
+                        <button class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete All</button>
+                    </a>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<?php
+// $productCollection = Mage::getModel("catalog/product")->getCollection();//Catalog_Model_Resource_Collection_Product Object 
+// // print_r($productCollection);    
+// // $productCollection->addFieldToFilter('name','abc');//'name','eq'=>'abc'
+// // $productCollection->addFieldToFilter('product_id','["in"=>[1,12,3]]');
+// // $productCollection->getData();
+// foreach ($productCollection->getData() as  $value) {
+//     echo "Product Id:";
+//     echo "".$value->getProductId();
+//     echo "  Status:";
+//     echo "".$value->getStatus();
+//     echo "<br>";
+//     // echo "".$value->getProductId();
+//     # code...
+// }
+
+// echo "<pre>";
+// $productCollection = Mage::getModel("catalog/product")->getCollection();
+
+$productCollection = $this->showList();
+// $productM = Mage::getModel("catalog/product");
+// $productCollection = Mage::getModel('catalog/product')->getCollection();
+$categoryModel = Mage::getModel('catalog/category');
+$categoryNames = $categoryModel->getCategoryIdName();
+// print_r(get_class($this));
+// $productCollection->addFieldToFilter('name', 'abc');
+// $productCollection->addFieldToFilter('product_id', ['in'=>[1,2,3]]);
+// $productCollection->addFieldToFilter('sku', ['like'=>'%abc']);
+// $productCollection->getData();
+?>
+<div class="box">
+    <div class="container-list">
+        <div class="add">
+            <div class="title">Product Information</div>
+            <span>Add New Product:</span>
+            <a href='<?php echo $this->getUrl('admin/catalog_product/form') ?>'><button class="add_btn" style='  padding: 5px 10px;background-color: #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Add</button></a>
+        </div>
+        <table>
+                        <tr>
+                            <th width='200vh'>Product ID</th>
+                            <th width='200vh'>Product Name</th>
+                            <!-- <th width='200vh'>SKU</th>-->
+                            <th width="200vh">Status</th>
+                            <th width='200vh'>Category</th> 
+                            <th width='200vh'>Edit</th>
+                            <th width='200vh'>Delete</th>
+                        </tr>
+
+<?php
+foreach ($productCollection->getData() as $product) {
+    // print_r(Mage::getModel('catalog/product')->getStatus());
+    // echo '' . $product->getProductId();
+    $selectedCategory = $categoryModel->getCategoryNameById($categoryNames, $product);
+    echo "<tr><td class = 'column' style=' padding: 5px 10px;
+    border: 1px solid #ccc;'>" . $product->getProductId() . "</td><td class = 'column' style=' padding: 5px 10px;
+    border: 1px solid #ccc;'>" . $product->getName() 
+    . "</td><td class = 'column' style=' padding: 5px 10px;
+    border: 1px solid #ccc;'>" . $product->getStatus()
+    . "</td><td class = 'column' style=' padding: 5px 10px;
+    border: 1px solid #ccc;'>" .              
+     $selectedCategory
+    . "</td>";
+    ?>
+    <td align='center' class='button' style='border: 1px solid #ccc;'> <a
+                        href='<?php echo $this->getUrl('admin/catalog_product/form/') ?>?id=<?php echo $product->getProductId() ?>'><button
+                            class='upd' style='  padding: 5px 10px; background-color:  #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Edit</button></a> </td>
+                <td align='center' class='button' style='border: 1px solid #ccc;'> <a
+                        href='<?php echo $this->getUrl('admin/catalog_product/delete/') ?>?id=<?php echo $product->getProductId() ?>'><button
+                            class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete</button></a> </td>
+                </tr>
+    <?php
+}
+?>
+</table>
+</div>
+</div>
+
+
