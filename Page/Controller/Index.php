@@ -5,13 +5,14 @@ class Page_Controller_Index extends Core_Controller_Front_Action
     public function indexAction()
     {
         $layout = $this->getLayout(); //core_block_layout
+        $this->setFormCss('style');
         // $layout->getChild('head');
         // echo "<pre>";
         // $layout->getChild('head');
         // $layout->getChild('head')->addCss('css/navigation.css');
         // $layout->getChild('head')->addCss('css/page.css');
 
-        $banner = $layout->createBlock('core/template')
+        $banner = $layout->createBlock('page/banner')
                     ->setTemplate('banner/banner.phtml');
                     Mage::getImagePath("banner/abc.jpg");
         $layout->getChild('content')
