@@ -1,0 +1,32 @@
+<?php 
+// $imageName = Mage::getModel("banner/banner")->getCollection()
+//                                         ->addFieldToFilter("banner_id",1);
+// $imageNameOne = $imageName->getData()
+//                         ->getBannerImage();
+// // $imageName = $imageName->getBannerImage();
+// echo "<pre>";
+// print_r($imageNameOne);
+
+
+
+$productCollection = Mage::getModel("banner/banner")->getCollection();//Catalog_Model_Resource_Collection_Product Object 
+// $productCollection->addFieldToFilter("banner_id",1);
+// // print_r($productCollection);    
+// // $productCollection->addFieldToFilter('name','abc');//'name','eq'=>'abc'
+// // $productCollection->addFieldToFilter('product_id','["in"=>[1,12,3]]');
+// // $productCollection->getData();
+$imageList = [];
+$imageTitle = [];
+foreach ($productCollection->getData() as  $value) {
+    $imageList[] = $value->getBannerImage();
+    $imageTitle[] = $value->getBannerTitle();
+}
+// print_r($imageList);
+// echo $imageList;
+
+
+?>
+ <h1 style="position:absolute;font-size:14vw;color:white"><?php echo $imageTitle[1] ?></h1>
+<img src="<?php echo Mage::getImagePath("banner/".$imageList[1])?>" style="width:100%; height:50% margin:15px;">;
+
+</div>
