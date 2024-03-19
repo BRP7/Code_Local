@@ -1,0 +1,49 @@
+<?php 
+$order = $this->getOrders();
+// print_r($order);
+// echo "<br>";
+$item = $this->getOrderItems();
+// print_r($item);
+
+?>
+<div class="small-container">
+            <h2 class="title" >Ordered Products</h2>
+            <div class="row">
+<?php foreach ($item as $_items) { 
+    if($_items){
+        foreach ($_items as $_item){
+    ?>
+
+        
+              
+                    <div class="col-4">
+                        <a href="products-details.html"><img src="<?php echo Mage::getImagePath('catalog/product/'.$_item->getProduct()->getImageLink())?>"></a>
+                        <a href="products-details.html"><h4>Product Name : <?php echo $_item->getProduct()->getName();?></h4></a>
+                        <div class="rating">
+                            <!--(before this added awesome4 cdn font link to the head)added a cdn link by searching font awesome4 icon and from the site  search the star entering the first option and getting a link of this fa-star*-->
+                            <i class="fa fa-star" ></i>
+                            <i class="fa fa-star" ></i>
+                            <i class="fa fa-star" ></i>
+                            <i class="fa fa-star-half-o" ></i>
+                            <i class="fa fa-star-o" ></i>
+                        </div>
+                        <p>Price : <?php echo $_item->getProduct()->getPrice();?></p>
+                        <p>Qty : <?php echo $_item->getQty();?></p>
+                    </div>
+                    
+<?php } } } ?>
+</div>
+        </div>
+<?php
+foreach ($order as $_order) {
+    print_r($_order->getOrderId());
+    // print_r( $_order->getProduct());
+}
+
+// foreach ($item as $_item) {
+// //    print_r($_item->getProduct());
+//     echo $_item->getProduct()->getName();
+//     echo $_item->getQty();
+// }
+
+?>

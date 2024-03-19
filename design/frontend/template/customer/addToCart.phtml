@@ -1,7 +1,10 @@
-<?php $productItem = $this->getCartItem() ?>
+<?php $productItem = $this->getCartItem()->getData();
+// print_r($productItem);
+// die;
+?>
 
 <h2>Products</h2>
-<?php foreach ($productItem->getData() as $product) { ?>
+<?php foreach ($productItem as $product) { ?>
   <form action="<?php echo $this->getUrl('sales/quote/add') ?>" method="post">
     <div class="product">
       <div class="product-info">
@@ -14,7 +17,7 @@
         <input type="number" name="cart[qty]" value="<?php echo $product->getQty(); ?>" min="0">
       </div>
     </div>
-    <button type="submit" name="submit" value="submit">Update</button>
+    <button type="submit" name="submit" value="add to cart">Update</button>
    <button> <a href='<?php echo $this->getUrl("sales/quote/delete") ?>?id=<?php echo $product->getItemId()?>&qid=<?php echo $product->getQuoteId() ?>'>delete</a></button>
    <!-- <button> <a href='<?php echo $this->getUrl("sales/quote/checkout") ?>?id=<?php echo $product->getItemId()?>&qid=<?php echo $product->getQuoteId()?>&pid=<?php echo $product->getProductId()?>'>checkout</a></button> -->
   </form>

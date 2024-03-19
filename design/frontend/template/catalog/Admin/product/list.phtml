@@ -48,6 +48,7 @@ $categoryNames = $categoryModel->getCategoryIdName();
 
 <?php
 foreach ($productCollection->getData() as $product) {
+    
     // print_r(Mage::getModel('catalog/product')->getStatus());
     // echo '' . $product->getProductId();
     $selectedCategory = $categoryModel->getCategoryNameById($categoryNames, $product);
