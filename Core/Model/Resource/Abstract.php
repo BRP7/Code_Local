@@ -38,6 +38,7 @@ class Core_Model_Resource_Abstract {
             $id = $this->getAdapter()->update($sql);
         }else{
         $sql = $this->insertSql($this->getTableName(),$data);
+        print_r($sql);
         $id = $this->getAdapter()->insert($sql);
         $abstract->setId($id);
     }
@@ -66,6 +67,7 @@ class Core_Model_Resource_Abstract {
         }
         $conditions = rtrim($conditions, " AND ");
         $query = "UPDATE $table SET $set WHERE $conditions";
+        // print_r($query);
         return $query;
     }
     public function deleteSql($table_name, $where)

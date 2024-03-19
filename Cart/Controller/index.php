@@ -5,8 +5,8 @@ class Cart_Controller_index extends Core_Controller_Front_Action{
         $this->setFormCss("addToCart");
         $layout = $this->getLayout();
         $child = $layout->getChild("content");
-        $brand = $layout->createBlock("cart/cart");
-        $child->addChild('form',$brand);
+        $cart = $layout->createBlock("cart/cart");
+        $child->addChild('form',$cart);
         $layout->toHtml();
         
     }
@@ -23,6 +23,10 @@ class Cart_Controller_index extends Core_Controller_Front_Action{
      
         
     // }
+
+    public function orderAction(){
+        echo "Order Placed(❁´◡`❁)";
+    }
 
     public function saveAction(){
         $data =  $this->getRequest()->getParams('sales_quote_customer');

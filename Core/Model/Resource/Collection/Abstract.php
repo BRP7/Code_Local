@@ -40,6 +40,7 @@ class Core_Model_Resource_Collection_Abstract
     }
     public function load()
     {
+        // echo 123;
         $sql = "SELECT * FROM {$this->_select['FROM']}";  //table name
         if (isset($this->_select["WHERE"])) {  
             $whereCondition = [];

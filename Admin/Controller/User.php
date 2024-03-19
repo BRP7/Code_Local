@@ -69,6 +69,41 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         }
     }
 
+    public function orderAction()
+    {
+        $this->setFormCss("order");
+        $layout = $this->getLayout();
+        $child = $layout->getchild('content'); //core_block_layout
+        $productForm = $layout->createBlock('customer/admin_view');
+        $child->addChild('view',$productForm);
+        $layout->toHtml();
+    }
+    public function editAction()
+    {
+        $id = $this->getRequest()->getparams("id");
+        $this->setFormCss("orderEdit");
+        $layout = $this->getLayout();
+        $child = $layout->getchild('content'); //core_block_layout
+        $productForm = $layout->createBlock('customer/admin_edit')->setTemplate('customer/edit.phtml');
+        $child->addChild('view',$productForm);
+        $layout->toHtml();
+    }
+    public function saveAction()
+    {
+        $id = $this->getRequest()->getparams("id");
+        // print_r($id);
+        // die;
+        $data = $this->getRequest()->getPostData("status");
+
+        $dataAll = Mage::getModel('sales/order')->getCollection()
+                ->addFieldToFilter('order_id',$id)
+                ->getFirstItem();
+        // $status=$dataAll->getStatus();
+       $dataAll->addData('status',$data)
+                                    ->save();
+        print_r($dataAll);
+    }
+
     // public function listAction()
     // {
     //     $layout = $this->getLayout();
