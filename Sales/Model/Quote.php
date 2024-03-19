@@ -11,45 +11,40 @@ class Sales_Model_Quote extends Core_Model_Abstract
 
     public function initQuote()
     {
-        $quoteId = Mage::getSingleton("core/session")->get("quote_id");
-        // var_dump($quoteId);
-        if (!empty ($quoteId)) {
-            $this->load($quoteId);//sales_quote
-        }
-        if (!$this->getId()) {
-            $quote = Mage::getModel("sales/quote")
-                ->setData(["tax_percent" => 8, "grand_total" => 0])
-                ->save();
-            Mage::getSingleton("core/session")->set("quote_id", $quote->getId());
+        $quoteId = Mage::getSingleton('core/session')->get('quote_id');
+        $customerId = Mage::getSingleton('core/session')->get('logged_in_customer_id');
+        if (!$quoteId) {
+            $quote = Mage::getModel('sales/quote')
+                ->setData([
+                    'tax_percent' => 8,
+                    'grand_total' => 0,
+                ]);
+            if (!is_null($this->getQuoteCollection())) {
+                print_r($this->getQuoteCollection());
+                $quoteId = $this->getQuoteCollection()->getQuoteId();
+                $quote->addData('quote_id', $quoteId);
+            }
+            $quote->save();
+            Mage::getSingleton('core/session')
+                ->set('quote_id', $quote->getId());
             $quoteId = $quote->getId();
+            $this->load($quoteId);
+        } else {
+            if ($customerId) {
+                $quoteModel = Mage::getModel('sales/quote')->load($quoteId);
+                $quoteModel->addData('customer_id', $customerId)->save();
+                $quoteId = $quoteModel->getId();
+            }
             $this->load($quoteId);
         }
         return $this;
-
     }
-
     public function getItemCollection()
     {
-        // $this->initQuote();
-        // var_dump($this->getId());
         return Mage::getModel('sales/quote_item')->getCollection()
-            ->addFieldToFilter('quote_id', $this->getId());
+            ->addFieldToFilter('quote_id', $this->getId())
+            ->getData();
     }
-
-    protected function _beforeSave()
-    {
-        $grandTotal = 0;
-        foreach ($this->getItemCollection()->getData() as $_item) {
-            $grandTotal += $_item->getRowTotal();
-        }
-        if ($this->getTaxPercent()) {
-            $tax = round($grandTotal / $this->getTaxPercent(), 2);
-            $grandTotal = $grandTotal + $tax;
-        }
-        $this->addData('grand_total', $grandTotal);
-
-    }
-
     public function addProduct($request)
     {
         $this->initQuote();
@@ -59,6 +54,18 @@ class Sales_Model_Quote extends Core_Model_Abstract
         }
         $this->save();
         return $this;
+    }
+    protected function _beforeSave()
+    {
+        $grandTotal = 0;
+        foreach ($this->getItemCollection() as $_item) {
+            $grandTotal += $_item->getRowTotal();
+        }
+        if ($this->getTaxPercent()) {
+            $tax = round($grandTotal / $this->getTaxPercent(), 2);
+            $grandTotal = $grandTotal + $tax;
+        }
+        $this->addData('grand_total', $grandTotal);
     }
 
     public function removeProduct($request)
@@ -94,13 +101,13 @@ class Sales_Model_Quote extends Core_Model_Abstract
         $addrerssModel = Mage::getSingleton('sales/quote_customer');
         $addrerssModel->setData($data);
 
-        if ($quoteCustomerId) {
+        if ($quoteCustomerId) { //update
             $addrerssModel->addData('quote_customer_id', $quoteCustomerId)
                 ->save();
-        } else {
+        } else {  //insert
             $addrerssModel->save();
             $quoteCustomerId = $addrerssModel->getId();
-            Mage::getSingleton('core/session')->set('quote_customer_id', $quoteCustomerId);
+            Mage::getSingleton('core/session')->set('quote_customer_id', $quoteCustomerId);//not
         }
     }
 
@@ -142,6 +149,8 @@ class Sales_Model_Quote extends Core_Model_Abstract
         // die;
         // ->getFirstItem();
     }
+
+
     public function addPayment($data)
     {
         $paymentId = 0;
@@ -157,8 +166,26 @@ class Sales_Model_Quote extends Core_Model_Abstract
             $paymentModel->save();
         }
     }
+    public function getQuoteCollection()
+    {
+        $customerId = Mage::getSingleton('core/session')->get('logged_in_customer_id');
+        if ($customerId) {
+            return Mage::getSingleton('sales/quote')
+                ->getCollection()
+                ->addFieldToFilter('customer_id', $customerId)
+                ->addFieldToFilter('order_id', 0)
+                ->getFirstItem();
+        } else {
+            return null;
+        }
+    }
 
-
+    public function getOrderCollection()
+    {
+        return Mage::getModel('sales/order')
+            ->getCollection();
+    }
+ 
 
     public function convertToOrder()
     {
@@ -198,11 +225,13 @@ class Sales_Model_Quote extends Core_Model_Abstract
                 ->removeData('shipping_id')
                 ->addData('order_id', $order->getId())
                 ->save();
+            $this->getProductStock();
         }
-        Mage::getSingleton('sales/order')->getPaymentAndShippingId($payment->getId(),$shipping->getId());
+        Mage::getSingleton('sales/order')->getPaymentAndShippingId($payment->getId(), $shipping->getId());
         $this->addData('order_id', $order->getId())
             ->addData('payment_id', $payment->getId())
             ->addData('shipping_id', $shipping->getId())
+            // ->addData('is_order', 1)
             ->save();
 
     }
@@ -242,7 +271,22 @@ class Sales_Model_Quote extends Core_Model_Abstract
             ->getFirstItem();
     }
 
-
+    public function getProductStock()
+    {
+        foreach ($this->getItemCollection() as $_item) {
+            $data = Mage::getModel('catalog/product')
+                ->getCollection()
+                ->addFieldToFilter('product_id', $_item->getProductId());
+            foreach ($data->getData() as $product) {
+                $stock =  $product->getStock() - $_item->getQty();
+                Mage::getModel('catalog/product')
+                    ->setData($product->getData())
+                    ->addData('stock', $stock)
+                    ->save();
+            }
+        }
+        return $this;
+    }
 
 
 }

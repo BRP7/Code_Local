@@ -31,7 +31,7 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
     }
 
     public function addItem(Sales_Model_Quote $quote, $request)
-    {
+    { 
         if (!array_key_exists('item_id', $request)) {
             $item = $this->getCollection()
                 ->addFieldToFilter('product_id', $request['product_id'])
@@ -41,7 +41,6 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
 
             if ($item) {
                 $request['qty'] = $request['qty'] + $item->getQty();
-
             }
 
             $this->setData(
@@ -49,7 +48,7 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
                     'quote_id' => $quote->getId(),
                     'product_id' => $request['product_id'],
                     'qty' => $request['qty'],
-                    'customer_id'=>(Mage::getSingleton('core/session')->get('logged_in_customer_id'))
+                    // 'customer_id'=>(Mage::getSingleton('core/session')->get('logged_in_customer_id'))
                 ]
             );//dataset for sales_quote_item 
 
@@ -69,7 +68,7 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
                 'product_id' => $request['product_id'],
                 'quote_id' => $quote->getId(),
                 'qty' => $request['qty'],
-                'customer_id'=>(Mage::getSingleton('core/session')->get('logged_in_customer_id'))
+                // 'customer_id'=>(Mage::getSingleton('core/session')->get('logged_in_customer_id'))
             ]);
 
         }

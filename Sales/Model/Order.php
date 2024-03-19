@@ -15,6 +15,13 @@ class Sales_Model_Order extends Core_Model_Abstract
             ->save();
     }
 
+    public function getOrderItemCollection(sales_model_order $obj)
+    {
+        return Mage::getModel('sales/order_item')
+            ->getCollection()
+            ->addFieldToFilter('order_id',$obj->getOrderId());
+    }
+
     public function _beforeSave()
     {
         $orderNumber = rand(1000000, 9999999);

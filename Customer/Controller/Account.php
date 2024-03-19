@@ -27,6 +27,16 @@ class Customer_Controller_Account extends Core_Controller_Front_Action
         $child->addChild('register', $register);
         $layout->toHtml();
     }
+    public function orderAction()
+    {
+        $layout = $this->getLayout();
+        $this->setFormCss("order");
+        $child = $layout->getChild('content');
+        // $layout->getChild('head')->addCss('form.css');
+        $view = $layout->createBlock('customer/view');
+        $child->addChild('register', $view);
+        $layout->toHtml();
+    }
 
     public function saveAction()
     {
@@ -64,6 +74,7 @@ class Customer_Controller_Account extends Core_Controller_Front_Action
         }
         if($count){
             Mage::getSingleton("core/session")->set("logged_in_customer_id",$customerId);
+            Mage::getModel('sales/quote')->initQuote();
             $this->setRedirect("customer/account/dashboard");
         }
         else{
@@ -93,7 +104,7 @@ class Customer_Controller_Account extends Core_Controller_Front_Action
         $layout->toHtml();
        }
     }
-
+    
     public function logoutAction(){}
 
     
