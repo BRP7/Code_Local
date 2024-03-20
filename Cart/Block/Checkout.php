@@ -10,6 +10,8 @@ class Cart_Block_Checkout extends Core_Block_Template{
     public function getQuoteCustomerData(){
         
     }
+
+    protected $payment = ['COD','Credit Card','UPI'];
     protected $item;
     public function getProductCollection(){
         
