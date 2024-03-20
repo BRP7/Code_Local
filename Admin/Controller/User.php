@@ -14,7 +14,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         // print_r($data);
         // $result =   $model->getCollection()
         // ->addFieldToFilter("customer_email", $data["customer_email"])
-        if (isset($_POST["submit"])) {
+        if (isset ($_POST["submit"])) {
             $data = $this->getRequest()->getParams("login");
             if ($data["customer_email"] == $this->_userName) {
                 if ($data["password"] == $this->_password) {
@@ -75,7 +75,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         $layout = $this->getLayout();
         $child = $layout->getchild('content'); //core_block_layout
         $productForm = $layout->createBlock('customer/admin_view');
-        $child->addChild('view',$productForm);
+        $child->addChild('view', $productForm);
         $layout->toHtml();
     }
     public function editAction()
@@ -85,22 +85,19 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         $layout = $this->getLayout();
         $child = $layout->getchild('content'); //core_block_layout
         $productForm = $layout->createBlock('customer/admin_edit')->setTemplate('customer/edit.phtml');
-        $child->addChild('view',$productForm);
+        $child->addChild('view', $productForm);
         $layout->toHtml();
     }
     public function saveAction()
     {
-        $id = $this->getRequest()->getparams("id");
-        // print_r($id);
-        // die;
-        $data = $this->getRequest()->getPostData("status");
-
+        $paramData = $this->getRequest()->getparams();
+        Mage::getModel('sales/order')->historySave($paramData);
+        // $data = $this->getRequest()->getPostData("status");
         $dataAll = Mage::getModel('sales/order')->getCollection()
-                ->addFieldToFilter('order_id',$id)
-                ->getFirstItem();
-        // $status=$dataAll->getStatus();
-       $dataAll->addData('status',$data)
-                                    ->save();
+            ->addFieldToFilter('order_id', $paramData['id'])
+            ->getFirstItem();
+        $dataAll->addData('status', $paramData['status'])
+            ->save();
         print_r($dataAll);
     }
 
