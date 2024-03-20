@@ -39,4 +39,24 @@ class Sales_Model_Order extends Core_Model_Abstract
         }
         $this->addData('order_number', $orderNumber);
     }
+
+    public function historySave($data){
+        $orderId = ['order_id'=>$data['id']];
+        $fromStatus = Mage::getModel('sales/order')->load($data['id']);
+        $fromStatus = $fromStatus->getStatus();
+        $hisData = Mage::getModel('sales/order_history')
+                    ->setData($orderId)
+                    ->addData('to_status',$data['status'])
+                    ->addData('action_by',$data['action'])
+                    ->addData('from_status',$fromStatus);
+    //    print_r($hisData);die;
+                    $result = $hisData->save();
+            if ($result) {
+                echo '<script>alert("Data inserted successfully")</script>';
+                // echo "<script>location.href='" . Mage::getBaseUrl() . 'admin/catalog_product/list' . "'</script>";
+            }
+  
+
+    }
+    
 }

@@ -87,8 +87,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
     {
         return Mage::getSingleton('sales/quote_customer')
             ->getCollection()
-            ->addFieldToFilter('quote_id', Mage::getSingleton('core/session')
-                ->get('quote_id'))
+            ->addFieldToFilter('quote_id', Mage::getSingleton('core/session')->get('quote_id'))
             ->getFirstItem();
     }
     public function addAddress($data)
@@ -185,7 +184,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
         return Mage::getModel('sales/order')
             ->getCollection();
     }
- 
+
 
     public function convertToOrder()
     {
@@ -278,7 +277,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
                 ->getCollection()
                 ->addFieldToFilter('product_id', $_item->getProductId());
             foreach ($data->getData() as $product) {
-                $stock =  $product->getStock() - $_item->getQty();
+                $stock = $product->getStock() - $_item->getQty();
                 Mage::getModel('catalog/product')
                     ->setData($product->getData())
                     ->addData('stock', $stock)
@@ -287,6 +286,8 @@ class Sales_Model_Quote extends Core_Model_Abstract
         }
         return $this;
     }
+
+ 
 
 
 }
