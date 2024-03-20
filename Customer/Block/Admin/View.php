@@ -17,6 +17,11 @@ class Customer_Block_Admin_View extends Core_Block_Template{
     //     }
     // }
 
+    public function getOrderCollection($id)
+    {
+        return Mage::getModel('sales/order')->load($id);
+    }
+
     public function getOrderItems()
     {
         $_items = [];

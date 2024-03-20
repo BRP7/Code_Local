@@ -17,6 +17,8 @@ class Customer_Block_Admin_Edit extends Core_Block_Template{
     //     }
     // }
 
+    protected $status = ['pending','order placed','cancle','shipping'];
+
     public function getOrderItems($id)
     {
         $_items = [];
@@ -30,5 +32,15 @@ class Customer_Block_Admin_Edit extends Core_Block_Template{
         }
         return $_items;
     }
+
+    public function getOrderStatus(){
+        return  Mage::getModel('sales/order')->getOrderCollection()->getData(); 
+    }
+
+    public function getOrderCollection($id)
+    {
+        return Mage::getModel('sales/order')->load($id);
+    }
 }
+
 ?>
