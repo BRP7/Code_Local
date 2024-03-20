@@ -1,5 +1,6 @@
-<?php 
+<?php
 $productItem = $this->getProductCollection();
+$paymentOption = $this->payment;
 // $productItem = Mage::getSingleton('sales/quote');
 // $productItem->initQuote();
 // $productItem->getItemCollection(); 
@@ -45,7 +46,7 @@ $quoteCustomerId = $this->getQuoteCustomerData();
 
       <div>
         <div style="margin-left:40px" class="address-show">
-          <?php if (!empty($addressData)): ?>
+          <?php if (!empty ($addressData)): ?>
             <?php foreach ($addressData as $addValue): ?>
               <div id="asdasdasdasd" class="address-cards" data-json='{"customer":"<?php echo $addValue->getCustomerId(); ?>",
   "billing_address":"<?php echo $addValue->getBillingAddress(); ?>",
@@ -106,9 +107,9 @@ $quoteCustomerId = $this->getQuoteCustomerData();
           <div class="row">
             <div class="col-50">
               <h3>Billing Address</h3>
-              <!-- <input type="text" hidden name="sales_quote_customer[quote_id]" value="<?php // echo $quoteId ?>">
-            <input type="text" hidden name="sales_quote_customer[customer_id]" value="<?php //echo $customerId ?>">
-            <input type="text" hidden name="sales_quote_customer[quote_customer_id]" value="<?php //echo $quoteCustomerId ?>"> -->
+              <!-- <input type="text" hidden name="sales_quote_customer[quote_id]" value="<?php // echo $quoteId  ?>">
+            <input type="text" hidden name="sales_quote_customer[customer_id]" value="<?php //echo $customerId  ?>">
+            <input type="text" hidden name="sales_quote_customer[quote_customer_id]" value="<?php //echo $quoteCustomerId  ?>"> -->
               <label for="billing_address" class="label-billing-address">Billing Address:</label>
               <input type="text" id="billing_address" name="sales_quote_customer[billing_address]" required
                 class="input-billing-address">
@@ -173,11 +174,18 @@ $quoteCustomerId = $this->getQuoteCustomerData();
             <div class="form-group">
               <div class="field-group">
                 <label for="payment_options" class="label-payment-options">Payment Options:</label>
+                <!-- <option value="Cod">Cash on Delivery (COD)</option>
+                <option class="credit" value="creditcard">Credit Card</option>
+                <option value="Upi">UPI</option> -->
+                
                 <select id="payment_options" name="payment[payment_method]" required
-                  class="select-payment-options">
-                  <option value="Cod">Cash on Delivery (COD)</option>
-                  <option class="credit" value="creditcard">Credit Card</option>
-                  <option value="Upi">UPI</option>
+                class="select-payment-options">
+                <?php
+                foreach ($paymentOption as $value) {
+                  echo '<option value="' . $value . '">' . $value . '</option>';
+                  // echo '<option value="' . $key . '" ' . ($selectedCategory == $value ? 'selected' : '') . '>' . $value . '</option>';
+                }
+                ?>
                 </select>
                 <label for="payment_number">Card Number : </label>
                 <input id="payment_number" name="payment[card_number]" class="creditcart">
@@ -188,8 +196,7 @@ $quoteCustomerId = $this->getQuoteCustomerData();
             <div class="form-group">
               <div class="field-group">
                 <label for="shipping_options" class="label-shipping-options">Shipping Options:</label>
-                <select id="shipping_options" name="shipping[shipping_method]" required
-                  class="select-payment-options">
+                <select id="shipping_options" name="shipping[shipping_method]" required class="select-payment-options">
                   <option value="Normal">Normal</option>
                   <option value="Same_day">Same Day</option>
                   <!-- <option value="Upi">UPI</option> -->
@@ -198,7 +205,8 @@ $quoteCustomerId = $this->getQuoteCustomerData();
             </div>
 
             <input type="submit" value="Continue to checkout" class="btn">
-            <input type="submit" value="Save" formaction="<?php echo Mage::getBaseUrl('cart/index/save') ?>" class="btn">
+            <input type="submit" value="Save" formaction="<?php echo Mage::getBaseUrl('cart/index/save') ?>"
+              class="btn">
         </form>
 
         <!-- <label for="email"><i class="fa fa-envelope"></i> Email</label>
@@ -237,9 +245,9 @@ $quoteCustomerId = $this->getQuoteCustomerData();
             <input type="text" id="expmonth" name="expmonth" placeholder="December"> -->
       <div class="row">
 
-        <!-- <form action="<?php //echo Mage::getBaseUrl('sales/quote/save') ?>" method="post" class="payment-options-form">
+        <!-- <form action="<?php //echo Mage::getBaseUrl('sales/quote/save')  ?>" method="post" class="payment-options-form">
            Payment Options -->
-          <!-- <h2>Payment Options</h2>
+        <!-- <h2>Payment Options</h2>
 
           <div class="form-group">
             <div class="field-group">
@@ -249,11 +257,11 @@ $quoteCustomerId = $this->getQuoteCustomerData();
                 <option value="Cod">Cash on Delivery (COD)</option>
                 <option value="creditcard">Credit Card</option>
                 <option value="Upi">UPI</option> -->
-              <!-- </select>
+        <!-- </select>
             </div>
           </div> -->
 
-          <!-- <input type="submit" value="Submit" class="submit-button">
+        <!-- <input type="submit" value="Submit" class="submit-button">
         </form> -->
 
         <!-- <div class="col-50">
@@ -298,7 +306,7 @@ $quoteCustomerId = $this->getQuoteCustomerData();
 
     $cardNumber = getElementsByClass('creditcart');
     $card = getElementsByClass('credit');
-    if($card=='checked'){
-      $cardNumber.setAttribute('required',true);
+    if ($card == 'checked') {
+      $cardNumber.setAttribute('required', true);
     }
   </script>

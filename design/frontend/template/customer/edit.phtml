@@ -1,6 +1,10 @@
 <?php 
-$order = $this->getOrders();
+$status = $this->status;
 $id = $this->getRequest()->getparams("id");
+$orderStatus = $this->getOrderCollection($id);
+// print_r($orderStatus->getStatus());
+// die;
+$order = $this->getOrders();
 // var_dump($id);
 // print_r($order);
 // echo "<br>";
@@ -29,14 +33,23 @@ $item = $this->getOrderItems($id);
                         <p>Price : <?php echo $_item->getProduct()->getPrice();?></p>
                         <p>Qty : <?php echo $_item->getQty();?></p>
                         <h4>
-                            <form action="<?php echo Mage::getBaseUrl('admin/user/save')?>?id=<?php echo $_item->getOrderId(); ?>" method="post">
-                            <select name="status" id="status">
+                            <form action="<?php echo Mage::getBaseUrl('admin/user/save')?>?id=<?php echo $_item->getOrderId();?>&action=admin" method="post">
+                            <!-- <input type="text" value="<?php //echo $order->getOrderId()?>" hidden> -->
+                            <select id="status" name="status" class="form-control">
+                            <?php
+                            foreach ($status as $key => $value) {
+                                // echo '<option value="' . $value . '">' . $value . '</option>';
+                                echo '<option value="' . $key . '" ' . ($orderStatus->getStatus() == $value ? 'selected' : '') . '>' . $value . '</option>';
+                            }
+                            ?>
+                        </select>
+                            <!-- <select name="status" id="status">
                                 <option value="Pending">Pending</option>
                                 <option value="Order confirmation">Order confirmation</option>
                                 <option value="shipped">shipped</option>
-                                <!-- <option></option>
+                                 <option></option>
                                 <option></option> -->
-                            </select>
+                            <!-- </select> -->
                             <input type="submit" name="submit" value="submit">
 
                      </form>
