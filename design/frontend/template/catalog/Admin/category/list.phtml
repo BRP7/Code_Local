@@ -49,3 +49,17 @@
         </table>
     </div>
 </div>
+
+
+
+<?php
+
+$cartData = $this->getCartData();
+$productCollection = $this->showList();
+$categoryModel = Mage::getModel('catalog/category');
+$categoryNames = $categoryModel->getCategoryIdName();
+
+?>
+
+
+  

@@ -4,18 +4,18 @@
 		<h1><img src="<?php echo Mage::getImagePath('')?>"></h1>
 		<nav>
         <i class="ri-apple-fill"></i>
-        <a id="store" href="">Store</a>
-        <a href="">Mac</a>
-        <a href="">iPad</a>
-        <a href="">iPhone</a>
-        <a href="">Watch</a>
+        <a id="store" href="<?php echo $this->getUrl('catalog/product/all')?>">Store</a>
+        <a href="<?php echo $this->getUrl('catalog/category/view?id=3')?>">Mac</a>
+        <a href="<?php echo $this->getUrl('catalog/category/view?id=1')?>">iPad</a>
+        <a href="<?php echo $this->getUrl('catalog/category/view?id=2')?>">iPhone</a>
+        <a href="<?php echo $this->getUrl('catalog/category/view?id=4')?>">Watch</a>
         <a href="">AirPods</a>
         <a href="">TV & Home</a>
         <a href="">Entertainment</a>
         <a href="">Accessories</a>
         <a href="">Support</a>
         <i class="ri-search-line"></i>
-        <i class="ri-shopping-bag-line"></i>
+        <a href="<?php echo $this->getUrl('cart/index/cart')?>"><i class="ri-shopping-bag-line"></i></a>
         <i class="ri-menu-3-line"></i>
       </nav>
 

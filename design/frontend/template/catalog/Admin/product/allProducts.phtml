@@ -1,34 +1,23 @@
-<?php
-
-$cartData = $this->getCartData();
-$productCollection = $this->showList();
-$categoryModel = Mage::getModel('catalog/category');
-$categoryNames = $categoryModel->getCategoryIdName();
-
+<?php 
+$productCollection = $this->getProductCollection();
 ?>
 
 
-    <h1 class="title">Apple Products</h1>
+<h1 class="title">Apple Products</h1>
     <div class="product-grid-container">
     <?php foreach ($productCollection->getData() as $product) { ?>
-    
+        <?php //echo $product->getProductId() ?>
         <div class="product-container">
             <!-- <div class="product-image-wrapper">
                 </div> -->
-                <a href="<?php echo $this->getUrl('catalog/product/view') . '?id=' . $product->getProductId()?>">  <img src="<?php echo Mage::getImagePath("catalog/product/" . $product->getImageLink()) ?>" alt="" class="product-image"></a>
+               <a href="<?php echo $this->getUrl('catalog/product/view') . '?id=' . $product->getProductId()?>"> <img src="<?php echo Mage::getImagePath("catalog/product/" . $product->getImageLink()) ?>" alt="" class="product-image"></a>
             <div class="product-info-container">
                 <span class="product-seller">Krey Academy</span>
                 <h3 class="product-title"><?php echo $product->getName(); ?></h3>
                 <h3 class="product-price">Rs. <?php echo $product->getPrice(); ?></h3>
-                <!-- <form action="<?php echo $this->getUrl('sales/quote/add/') . '?id=' . $product->getProductId()?>" method="post">
-                <input type="number" name="cart[qty]" class="qty" value=1 min="1"
-                style="
-  margin-top: 10%;
-  margin-bottom: 10%;
-  width:40px;
-  height: 25px;
-}"
-                >
+<!-- 
+                <form action="<?php //echo $this->getUrl('sales/quote/add/') . '?id=' . $product->getProductId()?>" method="post">
+                <input type="number" name="cart[qty]" class="qty" value=1 min="1" hidden>
                 <button type="submit" style="
     background-color: green;
     color: white;
