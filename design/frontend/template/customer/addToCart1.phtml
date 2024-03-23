@@ -1,0 +1,29 @@
+<?php $productItem = $this->getCartItem()->getData();
+// print_r($productItem);
+// die;
+?>
+
+<h2>Products</h2>
+<?php foreach ($productItem as $product) { ?>
+  <form action="<?php echo $this->getUrl('sales/quote/add') ?>" method="post">
+    <div class="product">
+      <div class="product-info">
+        <p>
+          <?php echo $product->getProductId(); ?>
+        </p>
+        <input type="text" name="cart[item_id]" hidden value="<?php echo $product->getItemId() ?>">
+        <input type="text" name="cart[quote_id]" hidden value="<?php echo $product->getQuoteId() ?>">
+        <input type="text" name="cart[product_id]" hidden value="<?php echo $product->getProductId() ?>">
+        <input type="number" name="cart[qty]" value="<?php echo $product->getQty(); ?>" min="0">
+      </div>
+    </div>
+    <button type="submit" name="submit" value="add to cart">Update</button>
+   <button> <a href='<?php echo $this->getUrl("sales/quote/delete") ?>?id=<?php echo $product->getItemId()?>&qid=<?php echo $product->getQuoteId() ?>'>delete</a></button>
+   <!-- <button> <a href='<?php echo $this->getUrl("sales/quote/checkout") ?>?id=<?php echo $product->getItemId()?>&qid=<?php echo $product->getQuoteId()?>&pid=<?php echo $product->getProductId()?>'>checkout</a></button> -->
+  </form>
+<?php } ?>
+<button> <a href='<?php echo $this->getUrl("cart/checkout/checkout") ?>'>checkout</a></button>
+
+
+
+

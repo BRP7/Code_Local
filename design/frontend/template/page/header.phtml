@@ -1,7 +1,10 @@
+
+
+
 <header class="header-fixed" style=" margin-left:0%; padding-left:0%;">
 
 	<div class="header-limiter" style=" margin-left:0%; padding-left:0%;">
-		<h1><img src="<?php echo Mage::getImagePath('')?>"></h1>
+		<!-- <h1><img src="<?php //echo Mage::getImagePath('')?>"></h1> -->
 		<nav>
         <i class="ri-apple-fill"></i>
         <a id="store" href="<?php echo $this->getUrl('catalog/product/all')?>">Store</a>
@@ -9,14 +12,15 @@
         <a href="<?php echo $this->getUrl('catalog/category/view?id=1')?>">iPad</a>
         <a href="<?php echo $this->getUrl('catalog/category/view?id=2')?>">iPhone</a>
         <a href="<?php echo $this->getUrl('catalog/category/view?id=4')?>">Watch</a>
-        <a href="">AirPods</a>
+        <a href="<?php echo $this->getUrl('catalog/category/view?id=5')?>">AirPods</a>
         <a href="">TV & Home</a>
         <a href="">Entertainment</a>
         <a href="">Accessories</a>
         <a href="">Support</a>
         <i class="ri-search-line"></i>
         <a href="<?php echo $this->getUrl('cart/index/cart')?>"><i class="ri-shopping-bag-line"></i></a>
-        <i class="ri-menu-3-line"></i>
+        <a href="<?php echo $this->getUrl('customer/account/dashboard')?>"><i class="ri-user-3-fill"></i></a>
+                <!-- <i class="ri-menu-3-line"></i> -->
       </nav>
 
 	</div>
