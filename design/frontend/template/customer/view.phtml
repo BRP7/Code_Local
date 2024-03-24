@@ -17,9 +17,9 @@ $item = $this->getOrderItems();
                 foreach ($_items as $_item) {
                     ?>
                     <div class="col-4">
-                        <a href="products-details.html"><img
+                        <a href="<?php echo Mage::getBaseUrl('admin/user/details?id='.$_item->getOrderId())?>"><img
                                 src="<?php echo Mage::getImagePath('catalog/product/' . $_item->getProduct()->getImageLink()) ?>"></a>
-                        <a href="products-details.html">
+                        <a href="<?php echo Mage::getBaseUrl('admin/user/details?id='.$_item->getOrderId())?>">
                             <h4>Product Name :
                                 <?php echo $_item->getProduct()->getName(); ?>
                             </h4>

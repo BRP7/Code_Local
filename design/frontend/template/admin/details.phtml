@@ -1,0 +1,42 @@
+<?php
+$id = $this->getRequest()->getParams('id');
+$order = $this->getOrderCollection($id);
+$orderHistory = $this->getOrderHistoryCollection($id);
+// print_r($orderHistory);
+$payment = $this->getPaymentMethod($order->getPaymentId());
+$customer = $this->getCustomerMethod($order->getCustomerId());
+$shipping = $this->getShippingMethod($order->getShippingId());
+?>
+
+<h3>User Name : <?php  print_r($customer->getEmail()) ?></h3>
+<h3>Billing Info :</h3>
+<p>Address : <?php  print_r($customer->getBillingAddress()); print_r("  ".$customer->getBillingCity());print_r($customer->getBillingZip()); ?> </p>
+<p>Phone : <?php  print_r($customer->getBillingPhone());  ?> </p>
+
+
+
+<h3>Shipping Info :</h3>
+<p>Address : <?php  print_r($customer->getShippingAddress());print_r(" ".$customer->getShippingCity());print_r($customer->getShippingZip()); ?> </p>
+<p>Phone : <?php  print_r($customer->getShippingPhone());  ?> </p>
+
+
+<h3>Payment Method : </h3>
+<p><?php  print_r($payment->getPaymentMethod()) ?></p>
+
+
+<h3>Shipping Method : </h3> 
+<p><?php  print_r($shipping->getShippingMethod()) ?></p>
+<br>
+<br>
+<br>
+<h2>Order History <?php  print_r($order->getStatus()) ?></h2>
+<?php foreach ($orderHistory->getData() as  $_orderHistory) {?>
+    <div style="border: 2px solid black;margin:5px;">
+    <?php //var_dump($_orderHistory);?>
+    <h3>Order Id : <?php  print_r($_orderHistory->getOrderId()) ?></h3>
+    <h3>From Status : </h3><?php  print_r($_orderHistory->getFromStatus()) ?>
+    <h3>To Status : </h3> <?php  print_r($_orderHistory->getToStatus()) ?>
+    <h3>Action History :</h3> <?php  print_r($_orderHistory->getActionBy()) ?>
+    <h3>Change Date : </h3> <?php  print_r($_orderHistory->getDate()) ?>
+</div>
+<?php }?>

@@ -26,28 +26,31 @@ $obj = $this->getCustomerOrder();
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Orders</h6>
                                 <div class="row">
                                     <?php foreach ($obj as $value) { ?>
-                                        <a href="<?php echo $this->getUrl('catalog/product/view?id=' . $value->getItemCollection()->getProductId()); ?>"
-                                            style="text-decoration:none;color:#000">
-                                            <div class="col-sm-6"
-                                                style="border-bottom: 1px solid Black;margin-bottom: 30px;">
-                                                <p class="m-b-10 f-w-600">Status :
-                                                    <?php echo $value->getStatus(); ?>
-                                                </p>
-                                                <h6 class="text-muted f-w-400">Product Name :
-                                                    <?php echo $value->getItemCollection()->getProductName(); ?>
-                                                </h6>
-                                            </div>
-                                        </a>
+                                        <div style="border-bottom: 1px solid Black;margin-bottom: 30px;">
+                                            <a href="<?php echo $this->getUrl('catalog/product/view?id=' . $value->getItemCollection()->getProductId()); ?>"
+                                                style="text-decoration:none;color:#000">
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">Status :
+                                                        <?php echo $value->getStatus(); ?>
+                                                    </p>
+                                                    <h6 class="text-muted f-w-400">Product Name :
+                                                        <?php echo $value->getItemCollection()->getProductName(); ?>
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                            <a href="<?php echo $this->getUrl('admin/order/cancle'); ?>"><button
+                                                    type="button" class="btn btn-dark">Cancle Request</button></a>
+                                        </div>
+
                                     <?php } ?>
-
-
                                 </div>
-                                <div class="col-sm-6">
-                                    <a href="<?php echo $this->getUrl('customer/account/logout'); ?>"><button
-                                            type="button" class="btn btn-dark">Logout</button></a>
-                                    <!-- <p class="m-b-10 f-w-600">Most Viewed</p>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="<?php echo $this->getUrl('customer/account/logout'); ?>"><button type="button"
+                                        class="btn btn-dark">Logout</button></a>
+                                <!-- <p class="m-b-10 f-w-600">Most Viewed</p>
                                                                         <h6 class="text-muted f-w-400">Dinoter husainm</h6> -->
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,4 +58,5 @@ $obj = $this->getCustomerOrder();
             </div>
         </div>
     </div>
+</div>
 </div>
