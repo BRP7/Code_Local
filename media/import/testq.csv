@@ -1,2 +1,2 @@
-sku,name,price,image_link
-438,AirPods Max,59990,AirPodsMax.jpeg
+sku,name,price,image_link,category_id
+438,AirPods Max,59990,AirPodsMax.jpeg,5
