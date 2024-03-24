@@ -6,17 +6,17 @@ include "app/code/Local/autoload.php";
     $path = Mage::getImagePath("import/testq.csv");
     // echo $path;
     // die;
-    $tableCollection = Mage::getModel('import/import')->getCollection()->getData();
     if (($handle = fopen($path, "r")) !== FALSE) {
-      while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        if(!$row) {
-            $header = $data;
-            $row++;
-            continue;
-        }
-        $data1 = array_combine($header,$data);
-        $data1= json_encode($data1);
-        // Mage::getModel("import/import")->addData("data",$data1)->save();
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if(!$row) {
+                $header = $data;
+                $row++;
+                continue;
+            }
+            $data1 = array_combine($header,$data);
+            $data1= json_encode($data1);
+            Mage::getModel("import/import")->addData("data",$data1)->save();
+            $tableCollection = Mage::getModel('import/import')->getCollection()->getData();
         echo "<br>";
         $row++;
         foreach ($tableCollection as $productData) {
