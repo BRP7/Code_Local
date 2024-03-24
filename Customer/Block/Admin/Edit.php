@@ -17,7 +17,7 @@ class Customer_Block_Admin_Edit extends Core_Block_Template{
     //     }
     // }
 
-    protected $status = ['pending','order placed','cancle','shipping'];
+    protected $status = ['Panding','order placed','cancle','Shipping'];
 
     public function getOrderItems($id)
     {

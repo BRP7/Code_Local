@@ -7,6 +7,7 @@ class Sales_Controller_Quote extends Core_Controller_Front_Action{
         $data =  $this->getRequest()->getParams('cart');
         // print_r($data);
         $quote = Mage::getModel('sales/quote')->addProduct($data);
+        $this->setRedirect('cart/index/cart');
     }
     // public function CheckoutAction() {
     //     $customerId = Mage::getSingleton("core/session")->get("logged_in_customer_id");
@@ -20,7 +21,7 @@ class Sales_Controller_Quote extends Core_Controller_Front_Action{
     //     }
 
     public function saveAction(){
-        if(Mage::getSingleton('core/session')->get('logged_in_customer_id')){
+        
             $data =  $this->getRequest()->getParams('sales_quote_customer');
             $paymentData = $this->getRequest()->getParams('payment');
             $shippingData = $this->getRequest()->getParams('shipping');
@@ -32,11 +33,10 @@ class Sales_Controller_Quote extends Core_Controller_Front_Action{
             $quote->convertToOrder();
             // $quote = Mage::getSingleton('core/session')->get('quote_id');
             Mage::getSingleton('core/session')->remove('quote_id');
-            // $this->setRedirect('admin/user/order');
+           
+            $this->setRedirect('customer/account/dashboard');
             //  print_r($paymentData);
-        }else{
-            $this->setRedirect('customer/account/login');
-        }
+       
      
     }
   
@@ -44,7 +44,8 @@ class Sales_Controller_Quote extends Core_Controller_Front_Action{
     //  $request =  $this->getRequest()->getQueryData('id');
      $request = ['quote_id' => $this->getRequest()->getParams('qid'),
                     'item_id' => $this->getRequest()->getParams('id')];
-     $quote = Mage::getSingleton('sales/quote')->removeProduct($request);   
+     $quote = Mage::getSingleton('sales/quote')->removeProduct($request);  
+     $this->setRedirect('cart/index/cart'); 
     }
 
 }

@@ -41,6 +41,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
     }
     public function getItemCollection()
     {
+        // print_r($this->getId());
         return Mage::getModel('sales/quote_item')->getCollection()
             ->addFieldToFilter('quote_id', $this->getId())
             ->getData();
@@ -59,6 +60,8 @@ class Sales_Model_Quote extends Core_Model_Abstract
     {
         $grandTotal = 0;
         foreach ($this->getItemCollection() as $_item) {
+            var_dump($_item);
+
             $grandTotal += $_item->getRowTotal();
         }
         if ($this->getTaxPercent()) {
@@ -193,7 +196,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
             $order = Mage::getSingleton("sales/order")
                 ->setData($this->getData())
                 ->removeData('quote_id')
-                // ->removeData('order_id')
+                ->removeData('order_id')
                 ->save();
             foreach ($this->getQuoteItemCollection() as $_item) {
                 Mage::getModel("sales/order_item")
@@ -202,6 +205,10 @@ class Sales_Model_Quote extends Core_Model_Abstract
                     ->removeData('item_id')
                     ->removeData('customer_id')
                     ->addData('order_id', $order->getId())
+                    // print_r($_item->getProduct()->getName());
+                    // die;
+                    ->addData('product_name',$_item->getProduct()->getName())
+                    ->addData('product_color',$_item->getProduct()->getColor())
                     ->save();
             }
             Mage::getModel("sales/order_customer")
@@ -287,7 +294,14 @@ class Sales_Model_Quote extends Core_Model_Abstract
         return $this;
     }
 
- 
+    public function getQuoteCollectionByQuoteId($id)
+    {
+        return Mage::getModel('sales/quote')
+            ->getCollection()
+            ->addFieldToFilter('quote_id', $id)
+        ;
+        // ->addFieldToFilter('order_id',$obj->getOrderId());
+    }
 
 
 }

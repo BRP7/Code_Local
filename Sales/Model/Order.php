@@ -9,9 +9,10 @@ class Sales_Model_Order extends Core_Model_Abstract
         // $this->_modelClass = 'sales/quote';
     }
 
-    public function getPaymentAndShippingId($paymentId,$shippingId){
-        $this->addData('payment_id',$paymentId)
-            ->addData('shipping_id',$shippingId)
+    public function getPaymentAndShippingId($paymentId, $shippingId)
+    {
+        $this->addData('payment_id', $paymentId)
+            ->addData('shipping_id', $shippingId)
             ->save();
     }
 
@@ -19,8 +20,16 @@ class Sales_Model_Order extends Core_Model_Abstract
     {
         return Mage::getModel('sales/order_item')
             ->getCollection()
-            ->addFieldToFilter('order_id',$obj->getOrderId());
+            ->addFieldToFilter('order_id', $obj->getOrderId());
     }
+    public function getItemCollection()
+    {
+        // print_r($this->getId());
+        return Mage::getModel('sales/order_item')->getCollection()
+            ->addFieldToFilter('order_id', $this->getId())
+            ->getFirstItem();
+    }
+   
 
     public function _beforeSave()
     {
@@ -40,23 +49,24 @@ class Sales_Model_Order extends Core_Model_Abstract
         $this->addData('order_number', $orderNumber);
     }
 
-    public function historySave($data){
-        $orderId = ['order_id'=>$data['id']];
+    public function historySave($data)
+    {
+        $orderId = ['order_id' => $data['id']];
         $fromStatus = Mage::getModel('sales/order')->load($data['id']);
         $fromStatus = $fromStatus->getStatus();
         $hisData = Mage::getModel('sales/order_history')
-                    ->setData($orderId)
-                    ->addData('to_status',$data['status'])
-                    ->addData('action_by',$data['action'])
-                    ->addData('from_status',$fromStatus);
-    //    print_r($hisData);die;
-                    $result = $hisData->save();
-            if ($result) {
-                echo '<script>alert("Data inserted successfully")</script>';
-                // echo "<script>location.href='" . Mage::getBaseUrl() . 'admin/catalog_product/list' . "'</script>";
-            }
-  
+            ->setData($orderId)
+            ->addData('to_status', $data['status'])
+            ->addData('action_by', $data['action'])
+            ->addData('from_status', $fromStatus);
+        //    print_r($hisData);die;
+        $result = $hisData->save();
+        if ($result) {
+            echo '<script>alert("Data inserted successfully")</script>';
+            // echo "<script>location.href='" . Mage::getBaseUrl() . 'admin/catalog_product/list' . "'</script>";
+        }
+
 
     }
-    
+
 }
