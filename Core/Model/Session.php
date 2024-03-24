@@ -11,6 +11,7 @@ class Core_Model_Session
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
+        return $this;
     }
     public function getId()
     {

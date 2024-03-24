@@ -90,4 +90,8 @@ class Core_Model_Resource_Collection_Abstract
         $this->load();
         return isset($this->_data[0]) ? $this->_data[0] : null;
     }
+    public function getLastItem() {
+        $this->load();
+        return isset($this->_data[count($this->_data)-1]) ? $this->_data[0] : null;
+    }
 }

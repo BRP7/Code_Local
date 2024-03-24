@@ -2,6 +2,7 @@
 
 class Core_Controller_Front_Action
 {
+  protected $cartRedirect = [];
   protected $_layout = null;
   // protected $_allowedActions=['register','login'];
   public function __construct()
@@ -9,7 +10,7 @@ class Core_Controller_Front_Action
     $this->init();
     $layout = $this->getLayout();
     $layout->getChild("head")
-      ->addCss("header.css")
+      ->addCss("header1.css")
       ->addCss("footer.css");
   }
   public function init(){
