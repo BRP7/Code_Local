@@ -72,10 +72,13 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
     public function orderAction()
     {
         $this->setFormCss("order");
+        $this->setFormCss("adminDashboard");
         $layout = $this->getLayout();
         $child = $layout->getchild('content'); //core_block_layout
         $productForm = $layout->createBlock('customer/admin_view');
-        $child->addChild('view', $productForm);
+        $productForm1 = $layout->createBlock('admin/dashboard');
+        $child->addChild('view', $productForm)
+        ->addChild('view1',$productForm1);
         $layout->toHtml();
     }
     public function editAction()
@@ -85,6 +88,17 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         $layout = $this->getLayout();
         $child = $layout->getchild('content'); //core_block_layout
         $productForm = $layout->createBlock('customer/admin_edit')->setTemplate('customer/edit.phtml');
+        $child->addChild('view', $productForm);
+        $layout->toHtml();
+    }
+    public function detailsAction()
+    {
+        $id = $this->getRequest()->getparams("id");
+        print_r($id);
+        // $this->setFormCss("orderEdit");
+        $layout = $this->getLayout();
+        $child = $layout->getchild('content'); //core_block_layout
+        $productForm = $layout->createBlock('admin/details')->setTemplate('admin/details.phtml');
         $child->addChild('view', $productForm);
         $layout->toHtml();
     }
