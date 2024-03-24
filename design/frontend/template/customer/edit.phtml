@@ -39,7 +39,7 @@ $item = $this->getOrderItems($id);
                             <?php
                             foreach ($status as $key => $value) {
                                 // echo '<option value="' . $value . '">' . $value . '</option>';
-                                echo '<option value="' . $key . '" ' . ($orderStatus->getStatus() == $value ? 'selected' : '') . '>' . $value . '</option>';
+                                echo '<option value="' . $value . '" ' . ($orderStatus->getStatus() == $value ? 'selected' : '') . '>' . $value . '</option>';
                             }
                             ?>
                         </select>

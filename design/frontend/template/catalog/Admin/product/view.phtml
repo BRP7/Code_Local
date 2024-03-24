@@ -59,7 +59,7 @@ $productCollection = $this->showList();
                 <form  method="post" action="<?php echo $this->getUrl('sales/quote/add/') . '?id=' . $product->getProductId()?>">
                 <input type="text" hidden name="cart[product_id]" value="<?php echo $product->getProductId() ?>">
                 <input type="number" name="cart[qty]" class="qty" value=1 min="1">
-                <input type="submit" class="btn" value="submit">
+                <input type="submit" class="btn" value="Add To Cart">
                 </form>
                 <!-- <form action="<?php //echo $this->getUrl('sales/quote/update/') . '?id=' . $product->getProductId()?>">
                 <input type="text" hidden name="cart[product_id]" value="<?php echo $product->getProductId() ?>">

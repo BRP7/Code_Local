@@ -7,7 +7,9 @@ $paymentOption = $this->payment;
 // var_dump($productItem->getFirstItem());
 ?>
 <?php $grandTotal = Mage::getModel('sales/quote')->getCollection();
-$grandTotal = $grandTotal->getFirstItem();
+if($grandTotal){
+  $grandTotal = $grandTotal->getFirstItem();
+}
 // $quoteId = $grandTotal->getQuoteId();
 // $customerId = $this->getCustomerId();
 $quoteCustomerId = $this->getQuoteCustomerData();
@@ -39,7 +41,7 @@ $quoteCustomerId = $this->getQuoteCustomerData();
       <p><a href="#">Item 4</a> <span class="price">$50</span></p> -->
         <hr>
         <p>Total <span class="price" style="color:black"><b>
-              <?php echo $grandTotal->getGrandTotal() ?>
+              <?php  if($grandTotal){ echo $grandTotal->getGrandTotal();} ?>
             </b></span></p>
       </div>
 
@@ -113,6 +115,9 @@ $quoteCustomerId = $this->getQuoteCustomerData();
               <label for="billing_address" class="label-billing-address">Billing Address:</label>
               <input type="text" id="billing_address" name="sales_quote_customer[billing_address]" required
                 class="input-billing-address">
+              <label for="billing_email" class="label-billing-email">Email:</label>
+              <input type="text" id="billing_email" name="sales_quote_customer[email]" required
+                class="input-billing-email">
               <label for="billing_city" class="label-billing-city">Billing City:</label>
               <input type="text" id="billing_city" name="sales_quote_customer[billing_city]" required
                 class="input-billing-city">
@@ -138,6 +143,11 @@ $quoteCustomerId = $this->getQuoteCustomerData();
                 <input type="text" id="shipping_address" name="sales_quote_customer[shipping_address]" required
                   class="input-shipping-address">
               </div>
+              <!-- <div class="field-group">
+                <label for="shipping_email" class="label-shipping-email">Email:</label>
+                <input type="text" id="shipping_email" name="sales_quote_customer[shipping_address]" required
+                  class="input-shipping-address">
+              </div> -->
 
               <div class="field-group">
                 <label for="shipping_city" class="label-shipping-city">Shipping City:</label>
