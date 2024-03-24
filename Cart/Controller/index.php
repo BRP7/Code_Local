@@ -1,8 +1,9 @@
 <?php
 class Cart_Controller_index extends Core_Controller_Front_Action{
-    
+    protected $_cartRedirect = [];
     public function cartAction() {
-        $this->setFormCss("addToCart");
+        $this->_cartRedirect = Mage::getSingleton('core/session')->set('cart','cartAction');
+        $this->setFormCss("addToCarts");
         $layout = $this->getLayout();
         $child = $layout->getChild("content");
         $cart = $layout->createBlock("cart/cart");

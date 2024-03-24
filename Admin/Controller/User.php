@@ -60,7 +60,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
     {
         $sessionId = Mage::getSingleton("core/session")->get("logged_in_admin_user_id");
         if ($sessionId) {
-            $this->setFormCss('dashboard');
+            $this->setFormCss('adminDashboard');
             $layout = $this->getLayout();
             $child = $layout->getChild('content');
             $login = $layout->createBlock('admin/dashboard');
@@ -99,6 +99,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         $dataAll->addData('status', $paramData['status'])
             ->save();
         print_r($dataAll);
+        $this->setRedirect('admin/user/order');
     }
 
     // public function listAction()

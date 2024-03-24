@@ -18,7 +18,9 @@ class Cart_Block_Cart extends Core_Block_Template{
     }
     public function getProductCollection(){ 
         return  Mage::getModel('sales/quote')->getItemCollection();
-       
+    }
+    public function getQuoteCollection($id){ 
+        return  Mage::getModel('sales/quote')->getQuoteCollectionByQuoteId($id);
     }
 }
 
