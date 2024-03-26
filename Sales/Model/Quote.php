@@ -20,7 +20,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
                     'grand_total' => 0,
                 ]);
             if (!is_null($this->getQuoteCollection())) {
-                print_r($this->getQuoteCollection());
+                // print_r($this->getQuoteCollection());
                 $quoteId = $this->getQuoteCollection()->getQuoteId();
                 $quote->addData('quote_id', $quoteId);
             }
@@ -60,7 +60,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
     {
         $grandTotal = 0;
         foreach ($this->getItemCollection() as $_item) {
-            var_dump($_item);
+            // var_dump($_item);
 
             $grandTotal += $_item->getRowTotal();
         }
@@ -123,7 +123,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
     }
     public function addShipping($data)
     {
-        print_r($data);
+        // print_r($data);
         $shippingId = 0;
         $shippingCollection = $this->getShippingCollection();
 
@@ -192,6 +192,7 @@ class Sales_Model_Quote extends Core_Model_Abstract
     public function convertToOrder()
     {
         $this->initQuote();
+
         if ($this->getId()) {
             $order = Mage::getSingleton("sales/order")
                 ->setData($this->getData())
@@ -301,6 +302,24 @@ class Sales_Model_Quote extends Core_Model_Abstract
             ->addFieldToFilter('quote_id', $id)
         ;
         // ->addFieldToFilter('order_id',$obj->getOrderId());
+    }
+
+    public function checkQty(){
+        $quoteId = Mage::getSingleton('core/session')->get('quote_id');
+        $quoteData = Mage::getSingleton('sales/quote_item')->getCollection()->addFieldToFilter('quote_id',$quoteId);
+        $flag = 0;
+        if($quoteData){
+            foreach($quoteData->getData() as $_item){
+                $itemQty = $_item->getQty();
+                $stock = $_item->getProduct()->getStock();
+                if($stock<=$itemQty){
+                $flag = $_item->getItemId();
+              }
+            }
+       }
+       return $flag;
+       
+      
     }
 
 

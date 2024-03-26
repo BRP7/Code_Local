@@ -54,6 +54,8 @@ class Sales_Model_Order extends Core_Model_Abstract
         $orderId = ['order_id' => $data['id']];
         $fromStatus = Mage::getModel('sales/order')->load($data['id']);
         $fromStatus = $fromStatus->getStatus();
+        // print_r($fromStatus);
+        // die;
         $hisData = Mage::getModel('sales/order_history')
             ->setData($orderId)
             ->addData('to_status', $data['status'])
