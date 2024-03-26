@@ -78,7 +78,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
         $productForm = $layout->createBlock('customer/admin_view');
         $productForm1 = $layout->createBlock('admin/dashboard');
         $child->addChild('view', $productForm)
-        ->addChild('view1',$productForm1);
+            ->addChild('view1', $productForm1);
         $layout->toHtml();
     }
     public function editAction()
@@ -94,7 +94,7 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
     public function detailsAction()
     {
         $id = $this->getRequest()->getparams("id");
-        print_r($id);
+        // print_r($id);
         // $this->setFormCss("orderEdit");
         $layout = $this->getLayout();
         $child = $layout->getchild('content'); //core_block_layout
@@ -105,15 +105,34 @@ class Admin_Controller_User extends Core_Controller_Admin_Action
     public function saveAction()
     {
         $paramData = $this->getRequest()->getparams();
+        // print_r($paramData);
+        if (isset ($paramData['status'])) {
+            $orderId = $paramData['id'];
+            $status = $paramData['status'];
+        } elseif (Mage::getSingleton('core/session')->get('order_cancle_request')) {
+            $orderId = Mage::getSingleton('core/session')->get('order_cancle_request');
+            $paramData['id']=$orderId;
+            $paramData['action']='admin';
+            if (isset ($paramData['admin'])) {
+                $status ='Request Decline';
+                $paramData['status']='Request Decline';
+            } else {
+                $status = "cancle";
+                $paramData['status']=$status;
+            }
+            // print_r($paramData);
+        }
+        // die;
+        // var_dump($orderId);
         Mage::getModel('sales/order')->historySave($paramData);
         // $data = $this->getRequest()->getPostData("status");
         $dataAll = Mage::getModel('sales/order')->getCollection()
-            ->addFieldToFilter('order_id', $paramData['id'])
+            ->addFieldToFilter('order_id', $orderId)
             ->getFirstItem();
-        $dataAll->addData('status', $paramData['status'])
+        $dataAll->addData('status', $status)
             ->save();
-        print_r($dataAll);
-        $this->setRedirect('admin/user/order');
+        // print_r($dataAll);
+        // $this->setRedirect('admin/user/order');
     }
 
     // public function listAction()

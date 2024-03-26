@@ -16,10 +16,6 @@ class Cart_Block_Checkout extends Core_Block_Template{
     public function getProductCollection(){
         
         return  Mage::getModel('sales/quote')->getItemCollection();
-                                    
-        // $quote->initQuote();
-        // $item = $quote->getItemCollection();
-        // print_r($item);
        
     }
 }
