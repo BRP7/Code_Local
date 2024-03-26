@@ -38,7 +38,7 @@ class Core_Model_Resource_Abstract {
             $id = $this->getAdapter()->update($sql);
         }else{
         $sql = $this->insertSql($this->getTableName(),$data);
-        print_r($sql);
+        // print_r($sql);
         $id = $this->getAdapter()->insert($sql);
         $abstract->setId($id);
     }

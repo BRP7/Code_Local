@@ -2,10 +2,11 @@
 class Core_Model_Request
 {
 
-	public function getParams($key = '', $arg = null) {
+	public function getParams($key = '', $arg = null)
+	{
 		return ($key == '')
 			? $_REQUEST
-			: (isset($_REQUEST[$key])
+			: (isset ($_REQUEST[$key])
 				? $_REQUEST[$key]
 				: ((!is_null($arg)) ? $arg : '')
 			);
@@ -16,7 +17,7 @@ class Core_Model_Request
 	{
 		return ($key == '')
 			? $_POST
-			: (isset($_POST[$key])
+			: (isset ($_POST[$key])
 				? $_POST[$key]
 				: ''
 			);
@@ -26,7 +27,7 @@ class Core_Model_Request
 	{
 		return ($key == '')
 			? $_GET
-			: (isset($_GET[$key])
+			: (isset ($_GET[$key])
 				? $_GET[$key]
 				: ''
 			);
@@ -44,9 +45,8 @@ class Core_Model_Request
 	{
 		$requstUri = $_SERVER['REQUEST_URI'];
 		$uri = str_replace('/practice/MVC/', '', $requstUri);
-		if(strpos($uri,'?') !== false) //? position return krse ? je value api hase eni ane nai male toh flase return krse
-			$uri = stristr($uri, '?', True); // ? ni agal ni puri string return kre
-		// print_r($uri);
+		if (strpos($uri, '?') !== false)
+			$uri = stristr($uri, '?', True);
 		return $uri;
 	}
 	protected $_controllerName, $_moduleName, $_actionName;
@@ -63,15 +63,15 @@ class Core_Model_Request
 	{
 		return $this->_actionName;
 	}
-	public function __construct()  
+	public function __construct()
 	{
 		$requestUri = $this->getRequestUri(); //id pela nu malse 
-      $requestUri = array_filter(explode('/', $requestUri)); //veriable ma url mali 
-        // print_r($requestUri);
+		$requestUri = array_filter(explode('/', $requestUri)); //veriable ma url mali 
+		// print_r($requestUri);
 		//-> access kre
-        $this->_moduleName = isset( $requestUri[0]) ?  $requestUri[0] : "page";
-        $this->_controllerName = isset( $requestUri[1]) ?  $requestUri[1] : "index";
-        $this->_actionName =isset( $requestUri[2]) ?  $requestUri[2] : "index";
+		$this->_moduleName = isset ($requestUri[0]) ? $requestUri[0] : "page";
+		$this->_controllerName = isset ($requestUri[1]) ? $requestUri[1] : "index";
+		$this->_actionName = isset ($requestUri[2]) ? $requestUri[2] : "index";
 	}
 	public function getFullControllerClass()
 	{
@@ -81,6 +81,6 @@ class Core_Model_Request
 		// return ucfirst($model) .'_Controller_' .ucfirst($contro);
 		$controllerClass = implode('_', [ucfirst($this->_moduleName), 'Controller', ucfirst($this->_controllerName)]);
 		// $controllerClass=stristr($controllerClass,'?',true);  admin_controller_catalog_product
-        return $controllerClass;
+		return $controllerClass;
 	}
 }

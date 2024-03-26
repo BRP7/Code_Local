@@ -40,8 +40,17 @@ class Core_Model_Resource_Collection_Abstract
     }
     public function load()
     {
+        $sql = "SELECT  * ";
+        if (isset ($this->_select['COUNT'])) {
+            $sql .= " ,  count(" . $this->_select['COUNT'] . ")";
+        }
+        if (isset ($this->_select['COUNT'])) {
+            $sql .= '  AS  ' . $this->_select['ALIAS'];
+        }
+        $sql .= " FROM {$this->_select['FROM']}";
+        
         // echo 123;
-        $sql = "SELECT * FROM {$this->_select['FROM']}";  //table name
+        // $sql = "SELECT * FROM {$this->_select['FROM']}";  //table name
         if (isset($this->_select["WHERE"])) {  
             $whereCondition = [];
             foreach ($this->_select["WHERE"] as $column => $value) {
@@ -74,6 +83,12 @@ class Core_Model_Resource_Collection_Abstract
             // print_r($sql);
         }
         // echo $sql;
+
+        if (isset ($this->_select['GROUP_BY'])) {
+            $sql .= " GROUP BY " . $this->_select['GROUP_BY'];
+        }
+     
+        
         $result = $this->_resource->getAdapter()->fetchAll($sql);
         foreach ($result as $row) {
             $this->_data[] = Mage::getModel($this->_modelClass)->setData($row);
@@ -94,4 +109,17 @@ class Core_Model_Resource_Collection_Abstract
         $this->load();
         return isset($this->_data[count($this->_data)-1]) ? $this->_data[0] : null;
     }
+
+    public function addGroupBy($column)
+    {
+        $this->_select['GROUP_BY'] = $column;
+        return $this;
+    }
+    public function addCount($column = '*', $alias = null)
+    {
+        $this->_select['COUNT'] = $column;
+        $this->_select['ALIAS'] = $alias;
+        return $this;
+    }
+ 
 }

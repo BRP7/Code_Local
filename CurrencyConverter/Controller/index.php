@@ -47,7 +47,7 @@ class CurrencyConverter_Controller_Index extends Core_Controller_Front_Action{
         $data = $this->getRequest()->getPostData('cur');
         $result = ($data['amount']*$data['country']) / $data['currency_country'];
         $data = $data + ['result'=>$result];
-        print_r($data);
+        // print_r($data);
         $save = Mage::getModel('currencyconverter/currencyconverter')->setData($data)->save();
         if($save){
             $this->setRedirect("currencyconverter/index/form");   

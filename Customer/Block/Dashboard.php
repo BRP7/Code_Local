@@ -9,12 +9,10 @@ class Customer_Block_Dashboard extends Core_Block_Template
     public function getCustomerOrder()
     {
         $customerId = Mage::getSingleton('core/session')->get("logged_in_customer_id");
-        // print_r($customerId);
-        $objOfOrder = Mage::getSingleton('sales/order')
+       return Mage::getSingleton('sales/order')
             ->getCollection()
-            ->addFieldToFilter('customer_id', $customerId)
-            ->getData();
-            return $objOfOrder;
+            ->addFieldToFilter('customer_id', $customerId);
+            
         // $objOfOrder->getCollection()
         // ->addFieldToFilter('customer_id',$customerId)
         // ->getData();
@@ -25,11 +23,8 @@ class Customer_Block_Dashboard extends Core_Block_Template
     }
 
     public function getOrderItem($id){
-        // $quoteId = Mage::getSingleton('core/session')->get('quote_id');
-        // if(!Mage::getSingleton("core/session")->get("logged_in_customer_id")){
             return Mage::getModel('sales/order_item')->getCollection()
-            ->addFieldToFilter('order_id',$id)
-            ->getFirstItem();
+            ->addFieldToFilter('order_id',$id);
         // }else{
         //     return Mage::getModel('sales/quote_item')->getCollection()
         //     ->addFieldToFilter('quote_id',$quoteId)

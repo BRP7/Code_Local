@@ -7,7 +7,8 @@ class Customer_Block_Admin_View extends Core_Block_Template{
     }
 
     public function getOrders(){
-      return  Mage::getModel('sales/quote')->getOrderCollection()->getData();
+      return  Mage::getModel('sales/quote')->getOrderCollection()
+      ->getData();
     }
 
     // public function getOrderItems()
@@ -21,6 +22,7 @@ class Customer_Block_Admin_View extends Core_Block_Template{
     {
         return Mage::getModel('sales/order')->load($id);
     }
+ 
 
     public function getOrderItems()
     {

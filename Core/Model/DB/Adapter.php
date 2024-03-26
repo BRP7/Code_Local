@@ -46,6 +46,7 @@ class Core_Model_DB_Adapter
         $row=[];
         $this->connect();
         $query = $query . " LIMIT 1";
+        // print_r($query);
         $result = $this->connect->query($query);
         while($_row = mysqli_fetch_assoc($result)){
             $row = $_row;
