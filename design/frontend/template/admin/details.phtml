@@ -38,5 +38,9 @@ $shipping = $this->getShippingMethod($order->getShippingId());
     <h3>To Status : </h3> <?php  print_r($_orderHistory->getToStatus()) ?>
     <h3>Action History :</h3> <?php  print_r($_orderHistory->getActionBy()) ?>
     <h3>Change Date : </h3> <?php  print_r($_orderHistory->getDate()) ?>
+    <?php if(Mage::getSingleton('core/session')->get('order_cancle_request')){ ?> 
+        <a href="<?php echo $this->getUrl('admin/user/save'); ?>"><button type="button" class="btn btn-dark">Cancle Accepted</button></a>
+        <a href="<?php echo $this->getUrl('admin/user/save?admin='.$_orderHistory->getToStatus()); ?>"><button type="button" class="btn btn-dark">Decline</button></a>
+    <?php } ?>
 </div>
 <?php }?>

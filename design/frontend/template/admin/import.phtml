@@ -1,0 +1,95 @@
+
+
+<script>
+function importData() {
+   console.log(1);
+    var type = document.getElementById("import-type").getAttribute("type");
+    var pendding = document.getElementById("import-type").getAttribute("pending");
+    var penddingCount = document.getElementById("pending-data");
+
+    var count = 0;
+    for (var i = 0; i < parseInt(pendding); i++) {
+        var obj = new XMLHttpRequest();
+        obj.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                if (this.responseText.trim() == `true`) {
+                    count++;
+                    document.getElementById(
+                        "progressbar"
+                    ).innerHTML = `(${count}/${pendding})`;
+                    penddingCount.innerHTML = parseInt(pendding) - parseInt(count);
+                }
+            }
+        };
+        // print_r(`import?type=${type}`); die;
+        obj.open("GET", `upload?type=${type}`, true);
+        obj.send();
+    }
+}
+</script>
+<?php //$data = $this->getBanner();?>
+<div class="box">
+    <div class="container">
+        <div class="title">Import Information</div>
+        <div class="content">
+            <form action="<?php echo $this->getUrl('import/index/save')?>" method="post">
+                <div class="user-details">
+                <div class="row">
+                      <!-- <input type="hidden" name="banner[banner_id]" value ="<?php //echo $data->getBannerId(); ?>"> -->
+                </div> 
+                    <div class="form-group">
+                        <label for="name" class="details">Csv File</label>
+                        <input type="file" class="form-control" id="import[file]" name="import[file]"
+                            placeholder="Choose File">
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="name" class="details">Show On</label>
+                        <input type="textbox" class="form-control" id="show_on" name="banner[show_on]"
+                            placeholder="Enter name" value ="<?php // echo $data->getShowOn(); ?>">
+                    </div> -->
+                </div>
+                <div class="button">
+                    <input type="submit" value="Read Csv" name="submit">
+                </div>
+                <!-- <div class="button">
+                    <input type="submit" value="Upload" onclick="importData()"  name="submit">
+                </div> -->
+                <!-- <div class="button">
+                    <?php //if(isset($_POST['submit'])){?>
+                    <a href="<?php //echo $this->getUrl('import/index/upload')?>" style="background-color:#45A049;padding:10px;border-radias:30px">Upload</a>
+                     <?php //} ?> 
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Pending Import</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->getPendingImportList() as $data): ?>
+                <tr>
+                    <td id="import-type" type="<?php echo $data->getType() ?>"
+                        pending="<?php echo $data->getPendingImport() ?>">
+                        <?php echo ucfirst($data->getType()) ?>
+                    </td>
+                    <td id="pending-data">
+                        <?php echo $data->getPendingImport() ?>
+                    </td>
+                    <td>
+                        <button onclick="importData()" id="import-button">Import</button>
+                        <span id="progressbar"></span>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+

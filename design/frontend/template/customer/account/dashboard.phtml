@@ -1,5 +1,11 @@
 <?php
+// echo "<pre>";
 $obj = $this->getCustomerOrder();
+// foreach ($obj->getData() as $order) {
+//     $orderId = $order->getOrderId();
+// print_r($obj);
+// $orderId = $obj->getOrderId();
+// die;
 // var_dump(Mage::getSingleton('sales/order')->getItemCollection($obj));
 // die;
 ?>
@@ -17,36 +23,61 @@ $obj = $this->getCustomerOrder();
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Email</p>
                                         <h6 class="text-muted f-w-400">rntng@gmail.com</h6>
+                                        <div class="col-sm-6">
+                                            <a href="<?php echo $this->getUrl('customer/account/logout'); ?>"><button
+                                                    type="button" class="btn btn-dark">Logout</button></a>
+                                            <!-- <p class="m-b-10 f-w-600">Most Viewed</p>
+                                                                        <h6 class="text-muted f-w-400">Dinoter husainm</h6> -->
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <!-- <p class="m-b-10 f-w-600">Phone</p>
                                                                         <h6 class="text-muted f-w-400">98979989898</h6> -->
                                     </div>
-                                </div>
-                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Orders</h6>
-                                <div class="row">
-                                    <?php foreach ($obj as $value) { ?>
-                                        <a href="<?php echo $this->getUrl('catalog/product/view?id=' . $value->getItemCollection()->getProductId()); ?>"
-                                            style="text-decoration:none;color:#000">
-                                            <div class="col-sm-6"
-                                                style="border-bottom: 1px solid Black;margin-bottom: 30px;">
-                                                <p class="m-b-10 f-w-600">Status :
-                                                    <?php echo $value->getStatus(); ?>
-                                                </p>
-                                                <h6 class="text-muted f-w-400">Product Name :
-                                                    <?php echo $value->getItemCollection()->getProductName(); ?>
-                                                </h6>
-                                            </div>
-                                        </a>
-                                    <?php } ?>
+                              
+                                <?php foreach ($obj->getData() as $order) {
+                                    $orderId = $order->getOrderId();
+                                    $orderItem = $this->getOrderItem($orderId);
+                                    ?>
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Orders</h6>
+                                    <div class="row">
+                                        <?php foreach ($orderItem->getData() as $value) { ?>
+                                            <a href="<?php echo $this->getUrl('catalog/product/view?id=' . $value->getProductId()); ?>"
+                                                style="text-decoration:none;color:#000">
+                                                <div class="col-sm-6"
+                                                    style="border-bottom: 1px solid Black;margin-bottom: 30px;">
+                                                    <p class="m-b-10 f-w-600">Status :
+                                                        <?php echo $order->getStatus(); ?>
+                                                    </p>
+                                                    <h6 class="text-muted f-w-400">Product Name :
+                                                        <?php echo $value->getProductName(); ?>
+                                                    </h6>
+                                                    <form action="<?php echo $this->getUrl('admin/order/cancle') ?>"
+                                                        method="post">
+                                                        <input type="text" value="<?php echo $value->getOrderId() ?>"
+                                                            name="order[order_id]" hidden>
+                                                        <input type="text" value="<?php echo $order->getStatus() ?>"
+                                                            name="order[from_status]" hidden>
+                                                        <input type="text" value="cancleRequest" name="order[to_status]" hidden>
+                                                        <input type="text" value="user" name="order[action_by]" hidden>
+                                                        <?php if (!($order->getStatus() == "cancle")) { ?>
+                                                            <input type="submit" value="Cancle Request " name="submit"
+                                                                class="btn btn-dark">
+                                                        <?php } else { ?>
+                                                            <p style="color:red;"> This Order Has Been Cancelled! </p>
+                                                        <?php } ?>
 
+                                                        <!-- <button type="submit" class="btn btn-dark">Cancle Request </button> -->
+                                                    </form>
+                                                    <!-- <a href="<?php //echo $this->getUrl('admin/order/cancle?oid='.$value->getOrderId().'&pid='.$value->getItemCollection()->getProductId());    ?>"><button
+                                                    type="button" class="btn btn-dark">Cancle Request</button></a> -->
+                                                </div>
+                                            </a>
+                                        <?php } ?>
 
-                                </div>
-                                <div class="col-sm-6">
-                                    <a href="<?php echo $this->getUrl('customer/account/logout'); ?>"><button
-                                            type="button" class="btn btn-dark">Logout</button></a>
-                                    <!-- <p class="m-b-10 f-w-600">Most Viewed</p>
-                                                                        <h6 class="text-muted f-w-400">Dinoter husainm</h6> -->
+                                        <?php } ?>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -55,4 +86,5 @@ $obj = $this->getCustomerOrder();
             </div>
         </div>
     </div>
+
 </div>
