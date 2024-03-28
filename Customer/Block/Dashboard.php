@@ -32,4 +32,9 @@ class Customer_Block_Dashboard extends Core_Block_Template
         // }
         
     }
+
+    public function customerData(){
+        $customerId = Mage::getSingleton('core/session')->get('logged_in_customer_id');
+        return Mage::getModel('customer/customer')->getCollection()->addFieldToFilter('customer_id',$customerId)->getFirstItem();
+    }
 }

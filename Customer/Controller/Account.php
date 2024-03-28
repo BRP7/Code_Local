@@ -50,10 +50,10 @@ class Customer_Controller_Account extends Core_Controller_Front_Action
 
         if ($result) {
             echo '<script>alert("Data insert successfully")</script>';
-            echo "<script>location.href='" . Mage::getBaseUrl() . '/customer/account/login' . "'</script>";
+            echo "<script>location.href='" . Mage::getBaseUrl() . 'customer/account/login' . "'</script>";
         } else {
             echo '<script>alert("OOPS! Something Went Wrong !!!! ")</script>';
-            echo "<script>location.href='" . Mage::getBaseUrl() . '/customer/account/register' . "'</script>";
+            echo "<script>location.href='" . Mage::getBaseUrl() . 'customer/account/register' . "'</script>";
         }
     }
 
@@ -119,7 +119,7 @@ class Customer_Controller_Account extends Core_Controller_Front_Action
     public function logoutAction()
     {
         Mage::getSingleton('core/session')->remove('logged_in_customer_id')->remove('quote_id');
-        $this->setRedirect('catalog/product/all');
+        $this->setRedirect('page/index/index');
     }
 
 

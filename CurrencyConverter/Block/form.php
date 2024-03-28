@@ -6,6 +6,9 @@ public function getCurrency(){
     return Mage::getModel("Currencyconverter/Currencyconverter")->load($this->getRequest()->getParams("id",0));
 }
 
+public function productCollection(){
+
+}
 public function getCountryIdName()
     {
         $countrys = [];

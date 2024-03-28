@@ -2,11 +2,19 @@
 
 class Sales_Model_Quote extends Core_Model_Abstract
 {
+    protected $_orderNumber = 0;
+    
     public function init()
     {
         $this->_resourceClass = 'Sales_Model_Resource_Quote';
         $this->_collectionClass = 'Sales_Model_Resource_Collection_Quote';
-        // $this->_modelClass = 'sales/quote';
+    }
+    public function getOrderNo(){
+        $this->_orderNumber += 1;
+        if($this->_orderNumber<99999){
+            return "CCC-0000".$this->_orderNumber;
+        }
+        return "CCC-".$this->_orderNumber;
     }
 
     public function initQuote()
@@ -14,34 +22,46 @@ class Sales_Model_Quote extends Core_Model_Abstract
         $quoteId = Mage::getSingleton('core/session')->get('quote_id');
         $customerId = Mage::getSingleton('core/session')->get('logged_in_customer_id');
         if (!$quoteId) {
+
+            //setting tax & gt attribute for quote table
             $quote = Mage::getModel('sales/quote')
                 ->setData([
                     'tax_percent' => 8,
                     'grand_total' => 0,
                 ]);
+
+            //for another browser if user is already in quote table no new quote genrated 
             if (!is_null($this->getQuoteCollection())) {
-                // print_r($this->getQuoteCollection());
                 $quoteId = $this->getQuoteCollection()->getQuoteId();
                 $quote->addData('quote_id', $quoteId);
             }
+
             $quote->save();
+
+            //$quote->getId from db if getCollection is not null & is then primary key genrated from insert query
             Mage::getSingleton('core/session')
                 ->set('quote_id', $quote->getId());
             $quoteId = $quote->getId();
             $this->load($quoteId);
+
         } else {
+
+            //customer is logged in & has been on site before
             if ($customerId) {
                 $quoteModel = Mage::getModel('sales/quote')->load($quoteId);
                 $quoteModel->addData('customer_id', $customerId)->save();
                 $quoteId = $quoteModel->getId();
             }
+
+            //loadding data set the _data[] of core_model_abstract -> to getData
             $this->load($quoteId);
         }
         return $this;
     }
+
+    //returns collection of item data based on quoteId
     public function getItemCollection()
     {
-        // print_r($this->getId());
         return Mage::getModel('sales/quote_item')->getCollection()
             ->addFieldToFilter('quote_id', $this->getId())
             ->getData();
@@ -60,8 +80,6 @@ class Sales_Model_Quote extends Core_Model_Abstract
     {
         $grandTotal = 0;
         foreach ($this->getItemCollection() as $_item) {
-            // var_dump($_item);
-
             $grandTotal += $_item->getRowTotal();
         }
         if ($this->getTaxPercent()) {
@@ -73,9 +91,9 @@ class Sales_Model_Quote extends Core_Model_Abstract
 
     public function removeProduct($request)
     {
+        //can get quote id from session as we don't start new session from different browser
         // $quoteId = Mage::getSingleton("core/session")->get("quote_id");
         $quoteId = $request['quote_id'];
-        //  print_r($quoteId);  
         $this->initQuote();
         if ($quoteId) {
             Mage::getSingleton('sales/quote_item')
@@ -140,16 +158,11 @@ class Sales_Model_Quote extends Core_Model_Abstract
     }
     public function getPaymentCollection()
     {
-        // print_r(Mage::getSingleton('core/session')
-        // ->get('quote_id'));
-        // echo "<br>";
         $res = Mage::getModel('sales/quote_payment')
             ->getCollection()
             ->addFieldToFilter('quote_id', Mage::getSingleton('core/session')->get('quote_id'))
             ->getFirstItem();
         return $res;
-        // die;
-        // ->getFirstItem();
     }
 
 
@@ -208,8 +221,8 @@ class Sales_Model_Quote extends Core_Model_Abstract
                     ->addData('order_id', $order->getId())
                     // print_r($_item->getProduct()->getName());
                     // die;
-                    ->addData('product_name',$_item->getProduct()->getName())
-                    ->addData('product_color',$_item->getProduct()->getColor())
+                    ->addData('product_name', $_item->getProduct()->getName())
+                    ->addData('product_color', $_item->getProduct()->getColor())
                     ->save();
             }
             Mage::getModel("sales/order_customer")
@@ -234,11 +247,12 @@ class Sales_Model_Quote extends Core_Model_Abstract
                 ->save();
             $this->getProductStock();
         }
+
+        //after successful insertion of order tables id related to order-payment-shipping was added in quote table
         Mage::getSingleton('sales/order')->getPaymentAndShippingId($payment->getId(), $shipping->getId());
         $this->addData('order_id', $order->getId())
             ->addData('payment_id', $payment->getId())
             ->addData('shipping_id', $shipping->getId())
-            // ->addData('is_order', 1)
             ->save();
 
     }
@@ -257,8 +271,8 @@ class Sales_Model_Quote extends Core_Model_Abstract
     {
         return Mage::getSingleton('sales/quote_customer')
             ->getCollection()
-            ->addFieldToFilter('quote_id', Mage::getSingleton('core/session')
-                ->get('quote_id'))
+            ->addFieldToFilter('quote_id',
+                             Mage::getSingleton('core/session')->get('quote_id'))
             ->getFirstItem();
     }
     public function getQuotePaymentCollection()
@@ -278,21 +292,26 @@ class Sales_Model_Quote extends Core_Model_Abstract
             ->getFirstItem();
     }
 
-    public function getProductStock()
-    {
-        foreach ($this->getItemCollection() as $_item) {
-            $data = Mage::getModel('catalog/product')
-                ->getCollection()
-                ->addFieldToFilter('product_id', $_item->getProductId());
-            foreach ($data->getData() as $product) {
-                $stock = $product->getStock() - $_item->getQty();
-                Mage::getModel('catalog/product')
-                    ->setData($product->getData())
-                    ->addData('stock', $stock)
-                    ->save();
-            }
-        }
-        return $this;
+    // public function getProductStock()
+    // {
+    //     foreach ($this->getItemCollection() as $_item) {
+    //         //function call getProduct which is in quote/item model
+    //         $data = Mage::getModel('catalog/product')
+    //             ->getCollection()
+    //             ->addFieldToFilter('product_id', $_item->getProductId());
+    //         foreach ($data->getData() as $product) {
+    //             $stock = $product->getStock() - $_item->getQty();
+    //             Mage::getModel('catalog/product')
+    //                 ->setData($product->getData())
+    //                 ->addData('stock', $stock)
+    //                 ->save();
+    //         }
+    //     }
+    //     return $this;
+    // }
+
+    public function getProductStock(){
+        foreach ($this->getItemCollection() as $_item) {}
     }
 
     public function getQuoteCollectionByQuoteId($id)
@@ -304,22 +323,49 @@ class Sales_Model_Quote extends Core_Model_Abstract
         // ->addFieldToFilter('order_id',$obj->getOrderId());
     }
 
-    public function checkQty(){
-        $quoteId = Mage::getSingleton('core/session')->get('quote_id');
-        $quoteData = Mage::getSingleton('sales/quote_item')->getCollection()->addFieldToFilter('quote_id',$quoteId);
+    // public function checkQty()
+    // {
+    //     $quoteId = Mage::getSingleton('core/session')->get('quote_id');
+    //     $quoteData = Mage::getSingleton('sales/quote_item')->getCollection()->addFieldToFilter('quote_id', $quoteId);
+    //     $flag = 0;
+    //     if ($quoteData) {
+    //         foreach ($quoteData->getData() as $_item) {
+    //             $itemQty = $_item->getQty();
+    //             $stock = $_item->getProduct()->getStock();
+    //             if ($stock <= $itemQty) {
+    //                 $flag = $_item->getItemId();
+    //             }
+    //         }
+    //     }
+    //     return $flag;
+    // }
+
+    public function checkQty($_items = null)
+    {
         $flag = 0;
-        if($quoteData){
-            foreach($quoteData->getData() as $_item){
-                $itemQty = $_item->getQty();
-                $stock = $_item->getProduct()->getStock();
-                if($stock<=$itemQty){
-                $flag = $_item->getItemId();
-              }
+        $this->initQuote();
+        if ($this->getId()) {
+            if ($_items) {
+                $itemQty = $_items->getQty();
+                $inventory = $_items->getProduct()->getStock();
+                if ($itemQty > $inventory) {
+                    $flag = 1;
+                }
+            } else {
+                foreach ($this->getItemCollection() as $_items) {
+                    $itemQty = $_items->getQty();
+                    $inventory = $_items->getProduct()->getStock();
+                    if ($itemQty > $inventory) {
+                        $flag = 1;
+                    }
+                }
             }
-       }
-       return $flag;
-       
-      
+            if ($flag == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
 

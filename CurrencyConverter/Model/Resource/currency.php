@@ -5,4 +5,6 @@ class Currencyconverter_Model_Resource_Currency extends Core_Model_Resource_Abst
     public function __construct(){
         $this->init("ccc_currency_rate","id");
     }
+
+  
 }

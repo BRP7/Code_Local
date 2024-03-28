@@ -44,6 +44,52 @@ class CurrencyConverter_Model_Currency extends Core_Model_Abstract{
         }
     }
 
+    public function currencyMapping(){
+        $currency = [];
+       $data = Mage::getModel('CurrencyConverter/currency')->getCollection();
+       foreach($data->getData() as $_currency){
+        $currency[$_currency->getId()] = $_currency->getCountryName(); 
+       }
+       return $currency;
+    }
+
+    public function getCountryNameById($mapping,$data){
+        $data1 = $data->getData();
+        print_r($data1);
+        // if(isset($data1['country'])){
+        foreach ($data1 as  $value) {
+            {
+                var_dump($value->getCountry());
+                return ($mapping[$value->getCountry()]);
+            }
+        // }
+    }
+    }
+    public function getCountryConNameById($mapping,$data){
+        $data1 = $data->getData();
+        // print_r($data1);
+        // if(isset($data1['country'])){
+        foreach ($data1 as  $value) {
+            {
+                var_dump($value->getCurrencyCountry	());
+                return ($mapping[$value->getCurrencyCountry()]);
+            }
+        // }
+    }
+    }
+    public function rateMapping($id){
+        $currency = [];
+       $data = Mage::getModel('CurrencyConverter/currency')->getCollection();
+       foreach($data->getData() as $_currency){
+        $currency[$_currency->getId()] = $_currency->getRate(); 
+       }
+       return $currency[$id];
+    }
+
+    public function rateConverter($mapping,$id){
+        return $mapping[$id];
+    }
+
 
 
 

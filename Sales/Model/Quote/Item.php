@@ -2,7 +2,7 @@
 
 class Sales_Model_Quote_Item extends Core_Model_Abstract
 {
-    protected $item = null;
+    protected $_item = null;
 
     public function init()
     {
@@ -10,12 +10,13 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
         $this->_collectionClass = 'Sales_Model_Resource_Collection_Quote_Item';
     }
 
+    //Give Product Details Based on ProductId from that Item Record
     public function getProduct()
     {
-        if (is_null($this->item)) {
-            $this->item = Mage::getModel('catalog/product')->load($this->getProductId());
+        if (is_null($this->_item)) {
+            $this->_item = Mage::getModel('catalog/product')->load($this->getProductId());
         }
-        return $this->item;
+        return $this->_item;
     }
 
     protected function _beforeSave()
@@ -28,21 +29,25 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
         }
     }
 
-    //work for both add & update based on item id
+    // add & update based on item id
     public function addItem(Sales_Model_Quote $quote, $request)
     {
+        //condition for insert we don't get item id if record is new in post data array
         if (!array_key_exists('item_id', $request)) {
+            
+            //check if item record already exist in db
             $item = $this->getCollection()
                 ->addFieldToFilter('product_id', $request['product_id'])
                 ->addFieldToFilter('quote_id', $quote->getId())
                 ->getFirstItem()
             ;
 
+            //if item exist before then qty added in previous one
             if ($item) {
                 $request['qty'] = $request['qty'] + $item->getQty();
             }
 
-            //dataset for sales_quote_item 
+            //dataset for sales_quote_item -> item id is autoIncrement for new record 
             $this->setData(
                 [
                     'quote_id' => $quote->getId(),
@@ -110,16 +115,11 @@ class Sales_Model_Quote_Item extends Core_Model_Abstract
             ->addFieldToFilter('item_id', $itemId)
             ->getFirstItem();
 
-            // print_r($item->getId());
-        //     die;
-
         if ($item) {
             $this->setId($item->getId());
         }
         // print($this->getId());
         $this->delete();
-
-        // return $this;
     }
     // public function removeItem(Sales_Model_Quote $quote, $itemId)
     // {
