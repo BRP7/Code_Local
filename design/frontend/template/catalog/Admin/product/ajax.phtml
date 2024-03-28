@@ -1,0 +1,26 @@
+<script>
+
+    function fun(){
+       const xhr = new XMLHttpRequest();
+        xhr.open('GET','list',true);
+
+        xhr.onprogress =function (){
+
+        }
+        xhr.onreadystatechange =function(){
+            console.log('ready state is',xhr.readyState)
+        }
+        xhr.onload =function(){
+            if(this.status === 200){
+                document.write(this.responseText)
+            }else{
+                console.log("error")
+            }
+
+        }
+        xhr.send();
+    }
+
+</script>
+
+<button onclick="fun()">click me</button>

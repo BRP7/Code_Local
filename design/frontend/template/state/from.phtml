@@ -1,0 +1,64 @@
+<div class="untree_co-section">
+    <div class="container" style="width: 800px;">
+        <form action="" method="post">
+            <div class="row">
+                <div>
+                    <h2 class="h3 mb-3 text-black">State Information</h2>
+                    <div class="p-3 p-lg-5 border bg-white">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label for="Agent" class="text-black">State<span class="text-danger">*</span></label>
+                                <select id="Agent" class="form-control" onChange="Checker(this)">
+                                    <option value="Select Agent" selected="selected">Select Agent</option>
+                                    <?php foreach ($this->getParentData() as $data) { ?>
+                                        <option value="<?php echo $data->getId() ?>">
+                                            <?php echo $data->getName() ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Child" class="text-black">Child<span class="text-danger">*</span></label>
+                                <select class="form-control" id="counter">
+                                    <option value="" selected="selected">Select Child</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 30px;">
+                                <div class="form-group">
+                                    <input class="btn btn-black btn-lg py-3 btn-block" type="submit" name="submit"
+                                        value="Submit">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Checker(el) {
+        const select = document.getElementById('counter');
+        removeOptions(select);
+        <?php foreach ($this->getParentData() as $agent) { ?>
+            <?php 
+                // print_r($agent->getId());
+                foreach ($this->getCHildData($agent->getId()) as $branch) { ?>
+                if (el.value == "<?php echo $branch->getStateId();?>") {
+                    var option1 = document.createElement("option");
+                    option1.text = "<?php echo $branch->getName()?>";
+                    option1.value = "<?php echo $branch->getStateId()?>";
+                    select.add(option1);
+                }
+            <?php } ?>
+        <?php } ?>
+    }
+
+    function removeOptions(selectElement) {
+        var i, L = selectElement.options.length - 1;
+        for (i = L; i >= 0; i--) {
+            selectElement.remove(i+1);
+        }
+    }
+</script>

@@ -1,5 +1,8 @@
 <?php
 // echo "<pre>";
+
+$customer = $this->customerData();
+// print_r($customer);
 $obj = $this->getCustomerOrder();
 // foreach ($obj->getData() as $order) {
 //     $orderId = $order->getOrderId();
@@ -21,8 +24,14 @@ $obj = $this->getCustomerOrder();
                                 <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">First Name : <?php echo $customer->getFirstName(); ?></p>
+                                        <p class="m-b-10 f-w-600">Last Name :  <?php echo $customer->getLastName(); ?></p>
                                         <p class="m-b-10 f-w-600">Email</p>
-                                        <h6 class="text-muted f-w-400">rntng@gmail.com</h6>
+                                        <h6 class="text-muted f-w-400"><?php echo $customer->getCustomerEmail(); ?></h6>
+                                        <p class="m-b-10 f-w-600">Address</p>
+                                        <h6 class="text-muted f-w-400"><?php echo $customer->getBillingAddress(); ?></h6>
+                                        <p class="m-b-10 f-w-600">Phone</p>
+                                        <h6 class="text-muted f-w-400"><?php echo $customer->getShippingPhone(); ?></h6>
                                         <div class="col-sm-6">
                                             <a href="<?php echo $this->getUrl('customer/account/logout'); ?>"><button
                                                     type="button" class="btn btn-dark">Logout</button></a>
@@ -45,12 +54,15 @@ $obj = $this->getCustomerOrder();
                                             <a href="<?php echo $this->getUrl('catalog/product/view?id=' . $value->getProductId()); ?>"
                                                 style="text-decoration:none;color:#000">
                                                 <div class="col-sm-6"
-                                                    style="border-bottom: 1px solid Black;margin-bottom: 30px;">
+                                                    style="border-bottom: 1px solid Black;margin: 30px 0px;">
                                                     <p class="m-b-10 f-w-600">Status :
                                                         <?php echo $order->getStatus(); ?>
                                                     </p>
                                                     <h6 class="text-muted f-w-400">Product Name :
                                                         <?php echo $value->getProductName(); ?>
+                                                    </h6>
+                                                    <h6 class="text-muted f-w-400">Product price :
+                                                        <?php echo $value->getPrice(); ?>
                                                     </h6>
                                                     <form action="<?php echo $this->getUrl('admin/order/cancle') ?>"
                                                         method="post">
@@ -62,7 +74,7 @@ $obj = $this->getCustomerOrder();
                                                         <input type="text" value="user" name="order[action_by]" hidden>
                                                         <?php if (!($order->getStatus() == "cancle")) { ?>
                                                             <input type="submit" value="Cancle Request " name="submit"
-                                                                class="btn btn-dark">
+                                                                class="btn btn-dark" style="margin: 30px 0px;">
                                                         <?php } else { ?>
                                                             <p style="color:red;"> This Order Has Been Cancelled! </p>
                                                         <?php } ?>
@@ -74,7 +86,12 @@ $obj = $this->getCustomerOrder();
                                                 </div>
                                             </a>
                                         <?php } ?>
-
+                                        <?php if (!($order->getStatus() == "cancle")) { ?>
+                                                            
+                                            <h6 class="f-w-400 fw-bolder">Total :
+                                                            <?php echo $order->getGrandTotal(); ?>
+                                                        </h6>
+                                                        <?php } ?>
                                         <?php } ?>
                                     </div>
 

@@ -2,7 +2,7 @@
 
 <script>
 function importData() {
-   console.log(1);
+//    console.log(1);
     var type = document.getElementById("import-type").getAttribute("type");
     var pendding = document.getElementById("import-type").getAttribute("pending");
     var penddingCount = document.getElementById("pending-data");
@@ -82,10 +82,11 @@ function importData() {
                         <?php echo ucfirst($data->getType()) ?>
                     </td>
                     <td id="pending-data">
+                        <!-- nothing but json_data column in db as aliase was given -->
                         <?php echo $data->getPendingImport() ?>
                     </td>
                     <td>
-                        <button onclick="importData()" id="import-button">Import</button>
+                        <button onclick="fetchFunc()" id="import-button">Import</button>
                         <span id="progressbar"></span>
                     </td>
                 </tr>
@@ -93,3 +94,13 @@ function importData() {
         </tbody>
     </table>
 
+
+<script>
+   function fetchFunc(e) {
+        // let id = e.value
+        // const select = document.getElementById('dd1_child');
+        fetch('upload?type=product')
+            .then(response => response.json())
+            .catch(error => console.error('Error :', error));
+    }
+</script>

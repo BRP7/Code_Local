@@ -1,0 +1,74 @@
+<?php $currencyName = Mage::getModel('currencyconverter/currency')->currencyMapping(); ?>
+
+
+<form action=<?php echo $this->getUrl('currencyconverter/index/save') ?> method="post">
+<select name="cur[country]">  
+<?php foreach ($currencyName as $key => $value) { ?>
+    <option value="<?php echo $key?>"> <?php echo $value ?> </option>
+<?php } ?>
+</select>
+<select name="cur[currency_country]">  
+<?php foreach ($currencyName as $key => $value) { ?>
+    <option value="<?php echo $key?>"> <?php echo $value ?> </option>
+<?php } ?>
+</select>
+<input type="submit" name="submit" value="submit">
+</form>
+
+
+<?php $productCollection = Mage::getModel("currencyconverter/currencyconverter")->getCollection(); ?>
+<div class="box">
+    <div class="container-list">
+        <div class="add">
+            <div class="title"> Information</div>
+          
+        </div>
+        <table>
+            <tr>
+                <!-- <th width='200vh'>Category ID</th> -->
+                <th width='200vh' >User Name</th>
+                <th width='200vh'>Amount</th>
+                <th width='200vh'>Result</th>
+                <th width='200vh'>Edit</th>
+                <th width='200vh'>Delete</th>
+            </tr>
+
+            <?php
+           // echo $productCollection->getStatus();
+            foreach ($productCollection->getData() as $product) {
+                // var_dump($product->getStatus());
+                // echo $product->getId();
+                // echo "<tr><td class = 'column'>";
+                // echo $product->getCategoryId();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                // echo $product->getUserName();
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getAmount();
+                echo "</td>";
+                echo "</td><td class = 'column' style='border: 1px solid #ccc;'>";
+                echo $product->getResult();
+                echo "</td>";
+                ?>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/form/') ?>?id=<?php echo $product->getId() ?>'>
+                        <button class='upd'  style='  padding: 5px 10px; background-color:  #5383d3;color: #fff;cursor: pointer; border-radius: 10px;'>Edit</button>
+                    </a>
+                </td>
+                <td align='center' class='button' style='border: 1px solid #ccc;'>
+                    <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/delete/') ?>?id=<?php echo $product->getId() ?>'>
+                        <button class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete</button>
+                    </a>
+                </td>
+                </tr>
+                <?php
+            }
+            ?>
+              <a href='
+                        <?php echo $this->getUrl('currencyconverter/index/deleteAll/') ?>'>
+                        <button class='del' style=" padding: 5px 10px; border-radius:10px; background-color: #dc3545;color:#FFF">Delete All</button>
+                    </a>
+        </table>
+    </div>
+</div>

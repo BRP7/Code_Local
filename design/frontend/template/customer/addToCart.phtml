@@ -11,8 +11,9 @@ $id = $this->getRequest()->getparams('id');
 // $gTotal = 0;
 // var_dump(Mage::getSingleton('sales/quote')->getTaxPercent());
 // $gTotal += round($gTotal / Mage::getModel('sales/quote')->getTaxPercent(),2);
-// if ($productItem) { //not needed as now there is empty cart
+if ($productItem) { //not needed as now there is empty cart
 $gTotal = $this->quoteData()->getLastItem()->getGrandTotal();
+}
 //   // print_r($gTotal);
 // }
 // echo '<pre>';
@@ -56,13 +57,13 @@ $gTotal = $this->quoteData()->getLastItem()->getGrandTotal();
                           class="d-block text-dark">
                           <?php echo $product->getProduct()->getName(); ?>
                         </a>
-                        <?php if ($id) {
-                          if ($id == $product->getItemId()) { ?>
-
-                            <p style="color:red;">Out Of Stock</p>
-
-                          <?php }
-                        } ?>
+                      <?php
+                      
+                      if ($this->checkStock($product)) { ?>
+                                          <?php //print_r($product)?>
+                                                    <p style="color: red">Out of stock</p>
+                                            
+                                        <?php } ?>
                         <!-- <small>
                             <span class="text-muted">Color:</span>
                             <span class="ui-product-color ui-product-color-sm align-text-bottom" style="background:#e81e2c;"></span> &nbsp;

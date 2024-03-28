@@ -3,12 +3,14 @@
 ?>
 <?php
 $countryModel = Mage::getModel('currencyconverter/currency');
-$country = $countryModel->getCountryIdName();
+$countryConModel = Mage::getModel('currencyconverter/currencyconverter');
+$country = $countryConModel->getCollection();
 // $country = $countryModel->getCurrencyValue('');
-$countryModel1 = $countryModel->getCollection();
+$countryModel1 = $countryModel->currencyMapping();
 // print_r($data);
-$selectedCountry = $countryModel->getCountrysNameById($country, $countryModel1);
-// print_r($selectedCountry);  
+$selectedCountry = Mage::getModel('currencyconverter/currency')->getCountryNameById($countryModel1,$country);
+$selectedConCountry = Mage::getModel('currencyconverter/currency')->getCountryConNameById($countryModel1,$country);
+// var_dump($selectedCountry);  
 ?>
 
 <div class="box">
@@ -37,7 +39,7 @@ $selectedCountry = $countryModel->getCountrysNameById($country, $countryModel1);
                             placeholder="Enter status" value ="<?php //echo $data->getStatus(); ?>"> -->
                             <select id="category_id" name="cur[country]" class="form-control">
                             <?php
-                            foreach ($country as $key => $value) {
+                            foreach ($countryModel1 as $key => $value) {
                                 echo '<option value="' . $key . '" ' . ($selectedCountry == $value ? 'selected' : '') . '>' . $value . '</option>';
                             }
                             ?>
@@ -46,11 +48,15 @@ $selectedCountry = $countryModel->getCountrysNameById($country, $countryModel1);
                     <div class="form-group">
                         <label for="status" class="details">convert country</label>
                             <select name="cur[currency_country]">
-                            <?php
-                            foreach ($country as $key => $value) {
-                                echo '<option value="' . $key . '" ' . ($selectedCountry == $value ? 'selected' : '') . '>' . $value . '</option>';
-                            }
-                            ?>
+                            <!-- <?php
+                            //foreach ($countryModel1 as $key => $value) {
+                                //echo '<option value="' . $key . '" ' . ($selectedConCountry == $value ? 'selected' : '') . '>' . $value . '</option>';
+                            //}
+                            ?> -->
+
+                            <?php foreach ($countryModel1 as $key => $value) {
+                                echo '<option value=" '.$key. ' " ' . ($selectedConCountry == $value ? 'selected' : '').'>'.$value.'</option>';
+                            }?>
                               </select>
 
                     </div>
