@@ -10,7 +10,7 @@ class Catalog_Model_Category extends Core_Model_Abstract
     // public function getArrayOfIDs(){
     //     //array -> block/category->id to name mapping getNameFromId define
     //     //product/model->getNameFromId ->call getModel(catalog/category) obj
-    // }
+    // }                     
     public function getCategoryIdName()
     {
         $categorys = [];
@@ -23,6 +23,7 @@ class Catalog_Model_Category extends Core_Model_Abstract
     public function getCategoryNameById($mapping, $product)
     {
         $productData = $product->getData();
+        // print_r($productData);
         if (isset($productData['category_id'])) {
             return $mapping[$productData['category_id']];
         }

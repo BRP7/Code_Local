@@ -16,8 +16,8 @@ class Cart_Block_Cart extends Core_Block_Template
                 ->addFieldToFilter('order_id',0);
                 // ->getFirstItem();
             foreach ($data->getData() as $value) {
-                // $value->addData("quote_id",$quoteId)->save();
                 Mage::getBlock('cart/cart')->mergeCart($value);
+                $value->addData("quote_id",$quoteId)->save();
             }
 
         }
@@ -64,6 +64,12 @@ class Cart_Block_Cart extends Core_Block_Template
     public function getQuoteCollection($id)
     {
         return Mage::getModel('sales/quote')->getQuoteCollectionByQuoteId($id);
+    }
+
+    public function checkStock($_cartProduct)
+    {
+        return Mage::getModel('sales/quote')->checkQty($_cartProduct);
+        // print_r(Mage::getModel('sales/quote')->qtyCheck($_cartProduct));
     }
 }
 
